@@ -6,6 +6,17 @@ use App\Capsule;
 require_once __DIR__ . '/vendor/autoload.php';
 
 $capsule = new Capsule();
+
 echo $capsule->property . PHP_EOL;
-$capsule->property = 'new value';
-echo $capsule->property . PHP_EOL;
+echo $capsule->myProperty . PHP_EOL;
+
+unset($capsule->property);
+$capsule->myProperty = 'my value';
+
+if (isset($capsule->property)) {
+    echo "Property: $capsule->property" . PHP_EOL;
+}
+
+if (isset($capsule->myProperty)) {
+    echo "My property: $capsule->myProperty" . PHP_EOL;
+}

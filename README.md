@@ -65,6 +65,28 @@ class MyCapsule implements Encapsulable {
         // The action to perform after setted the property
         echo 'Setted property...' . PHP_EOL;
     }
+
+    protected mixed $myProperty = 'My default value';
+
+    public function gettingMyProperty(): void {
+        // The action to perform before getting the property
+        echo 'Getting my property...' . PHP_EOL;
+    }
+
+    public function gettedMyProperty(): void {
+        // The action to perform after getted the property
+        echo 'Getted my property...' . PHP_EOL;
+    }
+
+    public function settingMyProperty(mixed $value): void {
+        // The action to perform before setting the property
+        echo 'Setting my property...' . PHP_EOL;
+    }
+
+    public function settedMyProperty(mixed $value): void {
+        // The action to perform after setted the property
+        echo 'Setted my property...' . PHP_EOL;
+    }
 }
 ```
 
@@ -74,9 +96,19 @@ Get/set a property:
 <?php
 
 $capsule = new MyCapsule();
-echo "Property: $capsule->property" . PHP_EOL;
-$capsule->property = 'new value';
-echo "Property: $capsule->property" . PHP_EOL;
+echo $capsule->property . PHP_EOL;
+echo $capsule->myProperty . PHP_EOL;
+
+unset($capsule->property);
+$capsule->myProperty = 'my value';
+
+if (isset($capsule->property)) {
+    echo "Property: $capsule->property" . PHP_EOL;
+}
+
+if (isset($capsule->myProperty)) {
+    echo "My property: $capsule->myProperty" . PHP_EOL;
+}
 ```
 
 The above code will output:
@@ -85,11 +117,14 @@ The above code will output:
 Getting property...
 Getted property...
 default value
-Setting property...
-Setted property...
-Getting property...
-Getted property...
-new value
+Getting my property...
+Getted my property...
+My default value
+Setting my property...
+Setted my property...
+Getting my property...
+Getted my property...
+My property: my value
 ```
 
 ## License

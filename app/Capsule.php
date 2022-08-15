@@ -43,4 +43,26 @@ class Capsule implements Encapsulable {
         // The action to perform after setted the property
         echo 'Setted property...' . PHP_EOL;
     }
+
+    protected mixed $myProperty = 'My default value';
+
+    public function gettingMyProperty(): void {
+        // The action to perform before getting the property
+        echo 'Getting my property...' . PHP_EOL;
+    }
+
+    public function gettedMyProperty(): void {
+        // The action to perform after getted the property
+        echo 'Getted my property...' . PHP_EOL;
+    }
+
+    public function settingMyProperty(mixed $value): void {
+        // The action to perform before setting the property
+        echo 'Setting my property...' . PHP_EOL;
+    }
+
+    public function settedMyProperty(mixed $value): void {
+        // The action to perform after setted the property
+        echo 'Setted my property...' . PHP_EOL;
+    }
 }
