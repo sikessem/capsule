@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+
+use App\Capsule;
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+$capsule = new Capsule();
+echo $capsule->property . PHP_EOL;
+$capsule->property = 'new value';
+echo $capsule->property . PHP_EOL;
