@@ -1,8 +1,8 @@
 <?php
 
-namespace Sikessem\Capsule;
+namespace Sikessem\Capsule\Interfaces;
 
-interface Gettable
+interface IsAccessible
 {
     public function __get(string $name): mixed;
 

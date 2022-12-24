@@ -1,8 +1,8 @@
 <?php
 
-namespace Sikessem\Capsule;
+namespace Sikessem\Capsule\Interfaces;
 
-interface Settable
+interface IsMutable
 {
     public function __set(string $name, mixed $value): void;
 

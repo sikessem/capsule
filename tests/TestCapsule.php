@@ -2,13 +2,10 @@
 
 namespace Sikessem\Capsule\Tests;
 
-use Sikessem\Capsule\Encapsulable;
-use Sikessem\Capsule\Encapsuler;
+use Sikessem\Capsule\BaseCapsule;
 
-class Capsule implements Encapsulable
+class TestCapsule extends BaseCapsule
 {
-    use Encapsuler;
-
     // The property to encapsulate must be defined if it has no getter/setter method.
     private mixed $property = 'default value';
 
