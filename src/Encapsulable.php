@@ -2,4 +2,6 @@
 
 namespace Sikessem\Capsule;
 
-interface Encapsulable extends Settable, Gettable {}
+interface Encapsulable extends Settable, Gettable
+{
+}

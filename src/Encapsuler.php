@@ -2,6 +2,7 @@
 
 namespace Sikessem\Capsule;
 
-trait Encapsuler {
+trait Encapsuler
+{
     use Setter, Getter;
 }

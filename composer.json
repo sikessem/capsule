@@ -15,13 +15,25 @@
     ],
     "type": "library",
     "license": "MIT",
+    "require": {
+        "php": "^8.0"
+    },
     "authors": [
         {
             "name": "SIGUI Kessé Emmanuel",
-            "email": "opensource@sikessem.com",
+            "email": "ske@sikessem.com",
             "homepage": "http://sikessem.com"
         }
     ],
+    "require-dev": {
+        "laravel/pint": "^1.2",
+        "pestphp/pest": "^1.22",
+        "phpstan/phpstan": "^1.9",
+        "phpunit/phpunit": "^9.5",
+        "rector/rector": "^0.15",
+        "symfony/var-dumper": "^6.1",
+        "vimeo/psalm": "^5.2"
+    },
     "autoload": {
         "psr-4": {
             "Sikessem\\Capsule\\": "src/"
@@ -29,13 +41,38 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\": "app/"
+            "Sikessem\\Capsule\\Tests\\": "tests/"
         }
     },
-    "require": {
-        "php": "^8.0"
+    "scripts": {
+        "shift": "rector",
+        "lint": "pint -v",
+        "test:init": [
+            "rector init",
+            "psalm --init",
+            "pest --init"
+        ],
+        "test:shift": "rector --dry-run",
+        "test:lint": "pint --test -v",
+        "test:types": "phpstan analyse --ansi --memory-limit=-1 --debug",
+        "test:formats": "psalm --no-diff",
+        "test:unit": "pest --colors=always",
+        "test": [
+            "@test:shift",
+            "@test:lint",
+            "@test:formats",
+            "@test:types",
+            "@test:unit"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "bin": "./capsule"
+    "prefer-stable": true
 }

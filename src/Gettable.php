@@ -2,7 +2,9 @@
 
 namespace Sikessem\Capsule;
 
-interface Gettable {
+interface Gettable
+{
     public function __get(string $name): mixed;
+
     public function __isset(string $name): bool;
 }
