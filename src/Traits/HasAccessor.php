@@ -9,9 +9,6 @@ trait HasAccessor
      */
     public function __get(string $name): mixed
     {
-        if (method_exists($this, $before_method = 'getting'.ucfirst($name))) {
-            $this->$before_method();
-        }
         if (method_exists($this, $method = 'get'.ucfirst($name))) {
             /** @var mixed $result */
             $result = $this->$method();
@@ -20,9 +17,6 @@ trait HasAccessor
             $result = $this->$name;
         } else {
             throw new \RuntimeException('Property '.$name.' not found');
-        }
-        if (method_exists($this, $after_method = 'getted'.ucfirst($name))) {
-            $this->$after_method();
         }
 
         return $result;
