@@ -2,10 +2,14 @@
 
 namespace Sikessem\Capsule\Traits;
 
+use Sikessem\Capsule\Exceptions\SetterException;
+
 trait HasMutator
 {
     /**
      * Modify the value of an object's properties using set methods
+     *
+     * @throws SetterException When property is not defined
      */
     public function __set(string $name, mixed $value): void
     {
@@ -14,7 +18,7 @@ trait HasMutator
         } elseif (property_exists($this, $name)) {
             $this->$name = $value;
         } else {
-            throw new \RuntimeException('Property '.$name.' not found');
+            throw SetterException::create($name);
         }
     }
 

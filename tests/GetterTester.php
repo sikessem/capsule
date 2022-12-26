@@ -2,7 +2,7 @@
 
 namespace Sikessem\Capsule\Tests;
 
-use RuntimeException;
+use Sikessem\Capsule\Exceptions\GetterException;
 use Sikessem\Capsule\Getter;
 use Sikessem\Capsule\Interfaces\IsAccessible;
 
@@ -17,7 +17,7 @@ it('should be accessible', function () {
     ->toBeInstanceOf(IsAccessible::class);
 });
 
-it('throws a runtime exception when an unsupported property is accessed', function () {
+it('throws a GetterException when an unsupported property is accessed', function () {
     expect(fn () => $this->getter->getProperty)
-    ->toThrow(RuntimeException::class, 'Property getProperty not found');
+    ->toThrow(GetterException::class, 'Unable to get property getProperty.');
 });

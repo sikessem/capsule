@@ -2,10 +2,14 @@
 
 namespace Sikessem\Capsule\Traits;
 
+use Sikessem\Capsule\Exceptions\GetterException;
+
 trait HasAccessor
 {
     /**
      * Access object properties using get methods or property value
+     *
+     * @throws GetterException When property is not accessible
      */
     public function __get(string $name): mixed
     {
@@ -16,7 +20,7 @@ trait HasAccessor
             /** @var mixed $result */
             $result = $this->$name;
         } else {
-            throw new \RuntimeException('Property '.$name.' not found');
+            throw GetterException::create($name);
         }
 
         return $result;

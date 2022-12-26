@@ -2,7 +2,7 @@
 
 namespace Sikessem\Capsule\Tests;
 
-use RuntimeException;
+use Sikessem\Capsule\Exceptions\SetterException;
 use Sikessem\Capsule\Interfaces\IsMutable;
 use Sikessem\Capsule\Setter;
 
@@ -17,7 +17,7 @@ it('should be accessible', function () {
     ->toBeInstanceOf(IsMutable::class);
 });
 
-it('throws a runtime exception when mutating an unsupported property', function () {
+it('throws a SetterException when mutating an unsupported property', function () {
     expect(fn () => $this->setter->setProperty = 'property')
-    ->toThrow(RuntimeException::class, 'Property setProperty not found');
+    ->toThrow(SetterException::class, 'Unable to set property setProperty.');
 });

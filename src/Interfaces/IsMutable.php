@@ -6,6 +6,8 @@ interface IsMutable
 {
     /**
      * Allows you to modify a property
+     *
+     * @throws ExceptionType When property is not defined
      */
     public function __set(string $name, mixed $value): void;
 
