@@ -3,14 +3,14 @@
 namespace Sikessem\Capsule;
 
 use Sikessem\Capsule\Interfaces\IsAccessible;
-use Sikessem\Capsule\Interfaces\IsMutable;
+use Sikessem\Capsule\Interfaces\IsModifiable;
 use Sikessem\Capsule\Traits\HasAccessor;
-use Sikessem\Capsule\Traits\HasMutator;
+use Sikessem\Capsule\Traits\HasModifier;
 
 /**
  * Allows access to modify the properties of the class dynamically
  */
-abstract class BaseCapsule implements IsAccessible, IsMutable
+abstract class BaseCapsule implements IsAccessible, IsModifiable
 {
-    use HasAccessor, HasMutator;
+    use HasAccessor, HasModifier;
 }

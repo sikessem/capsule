@@ -8,7 +8,7 @@ use Sikessem\Capsule\Traits\HasAccessor;
 /**
  * Provides access to class properties dynamically
  */
-abstract class Getter implements IsAccessible
+abstract class BaseGetter implements IsAccessible
 {
     use HasAccessor;
 }

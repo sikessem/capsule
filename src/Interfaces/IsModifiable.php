@@ -2,7 +2,7 @@
 
 namespace Sikessem\Capsule\Interfaces;
 
-interface IsMutable
+interface IsModifiable
 {
     /**
      * Allows you to modify a property

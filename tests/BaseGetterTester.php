@@ -2,12 +2,12 @@
 
 namespace Sikessem\Capsule\Tests;
 
+use Sikessem\Capsule\BaseGetter;
 use Sikessem\Capsule\Exceptions\GetterException;
-use Sikessem\Capsule\Getter;
 use Sikessem\Capsule\Interfaces\IsAccessible;
 
 beforeEach(function () {
-    $this->getter = new class() extends Getter
+    $this->getter = new class() extends BaseGetter
     {
     };
 });
