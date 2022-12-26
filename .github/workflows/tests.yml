@@ -17,13 +17,18 @@ jobs:
     steps:
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Cache dependencies
-      uses: actions/cache@v1
+      id: composer-cache
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - uses: actions/cache@v3
       with:
-        path: ~/.composer/cache/files
-        key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -31,6 +36,7 @@ jobs:
         php-version: ${{ matrix.php }}
         extensions: dom, mbstring, zip
         coverage: none
+        tools: vimeo/psalm
 
     - name: Install Composer dependencies
       run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist
