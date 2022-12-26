@@ -1,137 +1,176 @@
-<div align="center"><a href="https://sikessem.com/" title="SIKessEm"><img src="https://github.com/sikessem/sikessem/blob/main/SIKessEm-logo.png" alt="SIKessEm logo"/></a></div>
+<div align="center">
+    <div><a href="https://sikessem.com/" title="Sikessem"><img src="https://github.com/sikessem/.github/blob/HEAD/sikessem.svg" alt="Sikessem logo" height="256"/></a></div>
+    <div>
+        <a href="https://github.com/sikessem/capsule"><img alt="Capsule" src="https://img.shields.io/badge/Capsule-enabled-brightgreen.svg?style=flat"/></a>
+        <a href="https://github.com/sikessem/capsule/blob/HEAD/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Capsule is released under the MIT license."/></a>
+        <a href="https://github.com/sikessem/capsule/actions"><img alt="GitHub Workflow Status (main)" src="https://github.com/sikessem/capsule/workflows/Tests/badge.svg"/></a>
+        <a href="https://packagist.org/packages/sikessem/capsule"><img alt="Total Downloads" src="https://img.shields.io/packagist/dt/sikessem/capsule"/></a>
+        <a href="https://packagist.org/packages/sikessem/capsule"><img alt="Latest Version" src="https://img.shields.io/packagist/v/sikessem/capsule"/></a>
+        <a href="https://github.com/sikessem/.github/blob/HEAD/CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome!"/></a>
+        <a href="https://twitter.com/intent/follow?screen_name=sikessem_tweets"><img src="https://img.shields.io/twitter/follow/sikessem_tweets.svg?label=Follow%20@sikessem_tweets" alt="Follow @sikessem_tweets"/></a>
+    </div>
+</div>
 
 ***
 
 # Get/set PHP class properties dynamically
 
 Capsule allows to get/set a property thanks to the magic methods of PHP by defining the getter/setter of this property.
-Capsule also allows you to perform actions before getting/setting and/or after getted/setted a property.
 
+## 🔖 Contents
 
-## Installation
+- [Requirements](#-requirements)
+- [Installation](#%EF%B8%8F-installation)
+- [Usage](#-usage)
+- [Security Reports](#-security-reports)
 
-Using [composer](https://getcomposer.org/), you can install Capsule with the following command:
+## 📋 Requirements
 
-```bash
-composer require sikessem/capsule
-```
+> - **Requires [PHP 8.0+](https://php.net/releases/)** (at least 8.0.26 recommended to avoid potential bugs).
+> - **Requires [Composer v2+](https://getcomposer.org/)** to manage PHP dependencies.
 
+## ⚡️ Installation
 
-## Usage
+Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Composer](https://getcomposer.org/):
 
-Encapsulate a property:
+- By adding the `sikessem/capsule` dependency to your `composer.json` file:
 
-```php
-<?php
-
-use Sikessem\Capsule\{Encapsulable, Encapsuler};
-
-class MyCapsule implements Encapsulable {
-    use Encapsuler;
-
-    // The property to encapsulate must be defined if it has no getter/setter method.
-    private mixed $property = 'default value';
-
-    // No need to define this method if the property to get is defined.
-    public function getProperty(): mixed {
-        return $this->property;
+    ```json
+    {
+        "require" : {
+            "sikessem/capsule": "^1.0"
+        }
     }
+    ```
 
-    // No need to define this method if it has no action to perform before getting the property
-    public function gettingProperty(): void {
-        // The action to perform before getting the property
-        echo 'Getting property...' . PHP_EOL;
+- Or by including the dependency:
+
+    ```bash
+    composer require sikessem/capsule --no-dev
+    ```
+
+## 🧑‍💻 Usage
+
+- Define your custom capsule using Capsule's interface and traits:
+
+    ```php
+    <?php
+
+    use Sikessem\Capsule\Interfaces\IsAccessible;
+    use Sikessem\Capsule\Interfaces\IsModifiable;
+    use Sikessem\Capsule\Traits\HasAccessor;
+    use Sikessem\Capsule\Traits\HasModifier;
+
+    class Capsule implements IsAccessible, IsModifiable
+    {
+        use HasAccessor, HasModifier;
+
+        // The Capsule code...
     }
+    ```
 
-    // No need to define this method if it has no action to perform after getted the property
-    public function gettedProperty(): void {
-        // The action to perform after getted the property
-        echo 'Getted property...' . PHP_EOL;
+- Or you can use Base Capsule or Base Getter/Setter:
+
+    ```php
+    <?php
+
+    use Sikessem\Capsule\BaseCapsule;
+
+    class Capsule extends BaseCapsule
+    {
+        // The Capsule code...
     }
+    ```
 
-    // No need to define this method if the property to set is defined.
-    public function setProperty(mixed $value) {
-        $this->property = $value;
+    ```php
+    <?php
+
+    use Sikessem\Capsule\BaseGetter;
+
+    class Getter extends BaseGetter
+    {
+        // The Getter code...
     }
+    ```
 
-    // No need to define this method if it has no action to perform before setting the property
-    public function settingProperty(mixed $value): void {
-        // The action to perform before setting the property
-        echo 'Setting property...' . PHP_EOL;
+    ```php
+    <?php
+
+    use Sikessem\Capsule\BaseSetter;
+
+    class Setter extends BaseSetter
+    {
+        // The Setter code...
     }
+    ```
 
-    // No need to define this method if it has no action to perform after setted the property
-    public function settedProperty(mixed $value): void {
-        // The action to perform after setted the property
-        echo 'Setted property...' . PHP_EOL;
+1. Consider the Capsule below:
+
+    ```php
+    <?php
+
+    namespace App;
+
+    use Sikessem\Capsule\Interfaces\IsAccessible;
+    use Sikessem\Capsule\Interfaces\IsModifiable;
+    use Sikessem\Capsule\Traits\HasAccessor;
+    use Sikessem\Capsule\Traits\HasModifier;
+
+    class Capsule implements IsAccessible, IsModifiable
+    {
+        use HasAccessor, HasModifier;
+
+        public function getName(): string
+        {
+            return 'capsule';
+        }
+
+        protected mixed $value = null;
+
+        public function setValue(mixed $value = null): void
+        {
+            if (isset($value)) {
+                $this->value = $value;
+            } else {
+                unset($this->value);
+            }
+            
+        }
     }
+    ```
 
-    protected mixed $myProperty = 'My default value';
+2. You can use the capsule as below:
 
-    public function gettingMyProperty(): void {
-        // The action to perform before getting the property
-        echo 'Getting my property...' . PHP_EOL;
-    }
+    ```php
+    <?php
 
-    public function gettedMyProperty(): void {
-        // The action to perform after getted the property
-        echo 'Getted my property...' . PHP_EOL;
-    }
+    use App\Capsule;
 
-    public function settingMyProperty(mixed $value): void {
-        // The action to perform before setting the property
-        echo 'Setting my property...' . PHP_EOL;
-    }
+    $capsule = new Capsule();
 
-    public function settedMyProperty(mixed $value): void {
-        // The action to perform after setted the property
-        echo 'Setted my property...' . PHP_EOL;
-    }
-}
-```
+    isset($capsule->name); // Returns true
 
-Get/set a property:
+    echo $capsule->name; // Prints "capsule"
 
-```php
-<?php
+    unset($capsule->name); // Does nothing
 
-$capsule = new MyCapsule();
-echo $capsule->property . PHP_EOL;
-echo $capsule->myProperty . PHP_EOL;
+    isset($capsule->name); // Returns true
 
-unset($capsule->property);
-$capsule->myProperty = 'my value';
+    $capsule->name = 'value'; // Throws an exception
 
-if (isset($capsule->property)) {
-    echo "Property: $capsule->property" . PHP_EOL;
-}
+    $capsule->value = 'value'; // Set value to "value"
 
-if (isset($capsule->myProperty)) {
-    echo "My property: $capsule->myProperty" . PHP_EOL;
-}
-```
+    echo $capsule->value; // Prints "value"
 
-The above code will output:
+    unset($capsule->value); // Remove the value
 
-```bash
-Getting property...
-Getted property...
-default value
-Getting my property...
-Getted my property...
-My default value
-Setting my property...
-Setted my property...
-Getting my property...
-Getted my property...
-My property: my value
-```
+    isset($capsule->value); // Returns false
+    ```
 
-## License
+## 🔐 Security Reports
 
-This library is distributed under the [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+If you discover a security vulnerability within Capsule, please email [SIGUI Kessé Emmanuel](https://github.com/SIGUIKE) at [ske@sikessem.com](mailto:ske@sikessem.com). All security vulnerabilities will be promptly addressed.
 
+***
 
-## Security Reports
-
-Please send any sensitive issue to [opensource@sikessem.com](mailto:opensource@sikessem.com). Thanks!
+Capsule was developed by [Sikessem](https://sikessem.com).
