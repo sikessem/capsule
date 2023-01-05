@@ -3,6 +3,7 @@
 namespace Sikessem\Capsule\Traits;
 
 use Sikessem\Capsule\Exceptions\GetterException;
+use Sikessem\Capsule\Reflector;
 
 trait HasAccessor
 {
@@ -15,12 +16,12 @@ trait HasAccessor
     {
         if (method_exists($this, $method = 'get'.ucfirst($name))) {
             /** @var mixed $result */
-            $result = $this->$method();
+            $result = Reflector::invoke([$this, $method]);
         } elseif (property_exists($this, $name)) {
             /** @var mixed $result */
-            $result = $this->$name;
+            $result = Reflector::getPropertyValue($this, $name);
         } else {
-            throw GetterException::create($name);
+            throw GetterException::create('Unable to get property %s.', [$name]);
         }
 
         return $result;
@@ -31,7 +32,7 @@ trait HasAccessor
      */
     public function __isset(string $name): bool
     {
-        if (method_exists($this, $method = 'get'.ucfirst($name)) && $this->$method() !== null) {
+        if (method_exists($this, $method = 'get'.ucfirst($name)) && Reflector::invoke([$this, $method]) !== null) {
             return true;
         }
 

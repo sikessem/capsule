@@ -2,10 +2,10 @@
 
 namespace Sikessem\Capsule\Exceptions;
 
-final class SetterException extends BaseException
+use Sikessem\Capsule\Interfaces\ExceptionInterface;
+use Sikessem\Capsule\Traits\HasTrigger;
+
+final class SetterException extends \BadMethodCallException implements ExceptionInterface
 {
-    public static function create(string $property): static
-    {
-        return new self(sprintf('Unable to set property %s.', $property));
-    }
+    use HasTrigger;
 }

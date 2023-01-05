@@ -3,6 +3,7 @@
 namespace Sikessem\Capsule\Traits;
 
 use Sikessem\Capsule\Exceptions\SetterException;
+use Sikessem\Capsule\Reflector;
 
 trait HasModifier
 {
@@ -14,11 +15,11 @@ trait HasModifier
     public function __set(string $name, mixed $value): void
     {
         if (method_exists($this, $method = 'set'.ucfirst($name))) {
-            $this->$method($value);
+            Reflector::invoke([$this, $method], $value);
         } elseif (property_exists($this, $name)) {
-            $this->$name = $value;
+            Reflector::setPropertyValue($this, $name, $value);
         } else {
-            throw SetterException::create($name);
+            throw SetterException::create('Unable to set property %s.', [$name]);
         }
     }
 
@@ -28,7 +29,7 @@ trait HasModifier
     public function __unset(string $name): void
     {
         if (method_exists($this, $method = 'set'.ucfirst($name))) {
-            $this->$method(null);
+            Reflector::invoke([$this, $method], null);
         } elseif (property_exists($this, $name)) {
             unset($this->$name);
         }
