@@ -15,8 +15,6 @@ use Sikessem\Capsule\Exceptions\ReflectorException;
 
 final class Reflector
 {
-    public const PHP_81 = 80100;
-
     /**
      * @param array<object|string>|string|object|callable(mixed ...$args): mixed $callback
      */
@@ -114,11 +112,9 @@ final class Reflector
         throw ReflectorException::create('Cannot reflect a null or object method.');
     }
 
-    /** @psalm-suppress MixedInferredReturnType */
     public static function reflectReturnType(ReflectionFunctionAbstract $function): ?ReflectionType
     {
-        if (\PHP_VERSION_ID >= self::PHP_81 && $function->hasTentativeReturnType()) {
-            /** @psalm-suppress MixedReturnStatement */
+        if ($function->hasTentativeReturnType()) {
             return $function->getTentativeReturnType();
         }
 
@@ -225,7 +221,7 @@ final class Reflector
             return self::checkNamedType($type, $value);
         }
 
-        if (\PHP_VERSION_ID >= self::PHP_81 && $type instanceof ReflectionIntersectionType) {
+        if ($type instanceof ReflectionIntersectionType) {
             return self::checkIntersectionType($type, $value);
         }
 
@@ -257,7 +253,6 @@ final class Reflector
 
     public static function checkIntersectionType(ReflectionIntersectionType $type, mixed $value): bool
     {
-        /** @var ReflectionNamedType $t */
         foreach ($type->getTypes() as $t) {
             if (! self::checkNamedType($t, $value)) {
                 return false;
@@ -278,7 +273,10 @@ final class Reflector
         return false;
     }
 
-    public static function isMethod(mixed $callback): bool
+    /**
+     * @param array<object|string>|string|object|callable(mixed ...$args): mixed $callback
+     */
+    public static function isMethod(array|string|object|callable $callback): bool
     {
         if (! is_callable($callback)) {
             return false;
