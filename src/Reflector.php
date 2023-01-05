@@ -15,30 +15,34 @@ use Sikessem\Capsule\Exceptions\ReflectorException;
 
 final class Reflector
 {
+    public const PHP_81 = 80100;
+
     /**
-     * @param array<object|string>|string|callable(mixed ...$args): mixed $callback
+     * @param array<object|string>|string|object|callable(mixed ...$args): mixed $callback
      */
-    public static function invoke(array|string|callable $callback, mixed ...$arguments): mixed
+    public static function invoke(array|string|object|callable $callback, mixed ...$arguments): mixed
     {
         return self::invokeArgs($callback, $arguments);
     }
 
     /**
-     * @param  array<object|string>|string|callable(mixed ...$args): mixed  $callback
-     * @param  array<mixed>  $arguments
+     * @param  array<object|string>|string|object|callable(mixed ...$args): mixed  $callback
+     * @param  mixed[]  $arguments
      */
-    public static function invokeArgs(array|string|callable $callback, array $arguments = []): mixed
+    public static function invokeArgs(array|string|object|callable $callback, array $arguments = []): mixed
     {
         if (self::isMethod($callback)) {
-            if (is_array($callback)) {
+            if (is_array($callback) && is_object($callback[0]) && is_string($callback[1])) {
                 $object = $callback[0];
                 $method = $callback[1];
             } elseif (is_object($callback) && method_exists($callback, '__invoke')) {
                 $object = $callback;
                 $method = '__invoke';
-            } else {
+            } elseif (is_string($callback)) {
                 $object = null;
                 $method = $callback;
+            } else {
+                throw ReflectorException::create('Invalid method callback given');
             }
 
             $method = isset($object)
@@ -54,7 +58,7 @@ final class Reflector
     }
 
     /**
-     * @param  array<mixed>  $arguments
+     * @param  mixed[]  $arguments
      */
     public static function invokeMethodArgs(ReflectionMethod $method, ?object $object = null, array $arguments = []): mixed
     {
@@ -66,7 +70,7 @@ final class Reflector
     }
 
     /**
-     * @param  array<mixed>  $arguments
+     * @param  mixed[]  $arguments
      */
     public static function invokeFunctionArgs(ReflectionFunction $function, array $arguments = []): mixed
     {
@@ -78,9 +82,9 @@ final class Reflector
     }
 
     /**
-     * @param array<object|string>|string|callable(mixed ...$args): mixed $callback
+     * @param array<object|string>|string|object|callable(mixed ...$args): mixed $callback
      */
-    public static function reflectCallback(array|string|callable $callback): ReflectionFunction
+    public static function reflectCallback(array|string|object|callable $callback): ReflectionFunction
     {
         if (! is_callable($callback)) {
             throw ReflectorException::create('The callback must be callable.');
@@ -89,6 +93,9 @@ final class Reflector
         return self::reflectFunction(Closure::fromCallable($callback));
     }
 
+    /**
+     * @param  Closure|callable-string  $function
+     */
     public static function reflectFunction(Closure|string $function): ReflectionFunction
     {
         return new ReflectionFunction($function);
@@ -107,9 +114,11 @@ final class Reflector
         throw ReflectorException::create('Cannot reflect a null or object method.');
     }
 
+    /** @psalm-suppress MixedInferredReturnType */
     public static function reflectReturnType(ReflectionFunctionAbstract $function): ?ReflectionType
     {
-        if ($function->hasTentativeReturnType()) {
+        if (\PHP_VERSION_ID >= self::PHP_81 && $function->hasTentativeReturnType()) {
+            /** @psalm-suppress MixedReturnStatement */
             return $function->getTentativeReturnType();
         }
 
@@ -149,12 +158,12 @@ final class Reflector
     }
 
     /**
-     * @param  array<mixed>  $arguments
-     * @return array<mixed>
+     * @param  mixed[]  $arguments
+     * @return mixed[]
      */
     public static function resolveParameters(ReflectionFunctionAbstract $function, array $arguments = []): array
     {
-        /** @var array<mixed> $values */
+        /** @var mixed[] $values */
         $values = [];
         $key = 0;
         foreach ($function->getParameters() as $parameter) {
@@ -178,6 +187,7 @@ final class Reflector
                 throw ReflectorException::create('Parameter %s has invalid type.', [$name]);
             }
 
+            /** @psalm-suppress MixedAssignment */
             $values[] = $value;
             $key++;
         }
@@ -215,15 +225,14 @@ final class Reflector
             return self::checkNamedType($type, $value);
         }
 
-        if (
-            class_exists(ReflectionIntersectionType::class, false)
-            && $type instanceof ReflectionIntersectionType
-        ) {
+        if (\PHP_VERSION_ID >= self::PHP_81 && $type instanceof ReflectionIntersectionType) {
             return self::checkIntersectionType($type, $value);
         }
+
         if (! class_exists(ReflectionUnionType::class, false)) {
             return false;
         }
+
         if (! $type instanceof ReflectionUnionType) {
             return false;
         }
