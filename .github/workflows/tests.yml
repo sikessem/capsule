@@ -44,14 +44,8 @@ jobs:
     - name: Check code shift
       run: composer test:shift
 
-    - name: Check code lint
-      run: composer test:lint
-
-    - name: Check code formats
-      run: composer test:formats
-
-    - name: Check code types
-      run: composer test:types
+    - name: Check code styles
+      run: composer test:styles
 
     - name: Check features
       run: composer test:unit

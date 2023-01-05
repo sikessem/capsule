@@ -47,6 +47,7 @@
     "scripts": {
         "shift": "rector",
         "lint": "pint -v",
+        "format": "psalm --alter --issues=all --dry-run",
         "test:init": [
             "rector init",
             "psalm --init",
@@ -56,12 +57,15 @@
         "test:lint": "pint --test -v",
         "test:types": "phpstan analyse --ansi --memory-limit=-1 --debug",
         "test:formats": "psalm --no-diff",
+        "test:styles": [
+            "@test:lint",
+            "@test:types",
+            "@test:formats"
+        ],
         "test:unit": "pest --colors=always",
         "test": [
             "@test:shift",
-            "@test:lint",
-            "@test:formats",
-            "@test:types",
+            "@test:styles",
             "@test:unit"
         ]
     },
