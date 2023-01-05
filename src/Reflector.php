@@ -16,18 +16,18 @@ use Sikessem\Capsule\Exceptions\ReflectorException;
 final class Reflector
 {
     /**
-     * @param callable(mixed ...$args): mixed $callback
+     * @param array<object|string>|string|callable(mixed ...$args): mixed $callback
      */
-    public static function invoke(callable $callback, mixed ...$arguments): mixed
+    public static function invoke(array|string|callable $callback, mixed ...$arguments): mixed
     {
         return self::invokeArgs($callback, $arguments);
     }
 
     /**
-     * @param  callable(mixed ...$args): mixed  $callback
+     * @param  array<object|string>|string|callable(mixed ...$args): mixed  $callback
      * @param  array<mixed>  $arguments
      */
-    public static function invokeArgs(callable $callback, array $arguments = []): mixed
+    public static function invokeArgs(array|string|callable $callback, array $arguments = []): mixed
     {
         if (self::isMethod($callback)) {
             if (is_array($callback)) {
@@ -78,10 +78,14 @@ final class Reflector
     }
 
     /**
-     * @param callable(mixed ...$args): mixed $callback
+     * @param array<object|string>|string|callable(mixed ...$args): mixed $callback
      */
-    public static function reflectCallback(callable $callback): ReflectionFunction
+    public static function reflectCallback(array|string|callable $callback): ReflectionFunction
     {
+        if (! is_callable($callback)) {
+            throw ReflectorException::create('The callback must be callable.');
+        }
+
         return self::reflectFunction(Closure::fromCallable($callback));
     }
 
