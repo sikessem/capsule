@@ -1,6 +1,6 @@
 <?php
 
-namespace Sikessem\Capsule;
+namespace Sikessem\Capsule\Bases;
 
 use Sikessem\Capsule\Interfaces\IsModifiable;
 use Sikessem\Capsule\Traits\HasModifier;

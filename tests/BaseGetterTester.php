@@ -2,7 +2,7 @@
 
 namespace Sikessem\Capsule\Tests;
 
-use Sikessem\Capsule\BaseGetter;
+use Sikessem\Capsule\Bases\BaseGetter;
 use Sikessem\Capsule\Exceptions\GetterException;
 use Sikessem\Capsule\Interfaces\IsAccessible;
 

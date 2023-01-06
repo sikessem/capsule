@@ -3,7 +3,7 @@
 namespace Sikessem\Capsule\Traits;
 
 use Sikessem\Capsule\Exceptions\GetterException;
-use Sikessem\Capsule\Reflector;
+use Sikessem\Capsule\Utils\Reflector;
 
 trait HasAccessor
 {

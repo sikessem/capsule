@@ -2,7 +2,7 @@
 
 namespace Sikessem\Capsule\Tests;
 
-use Sikessem\Capsule\BaseCapsule;
+use Sikessem\Capsule\Bases\BaseCapsule;
 
 class TestCapsule extends BaseCapsule
 {

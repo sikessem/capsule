@@ -2,7 +2,7 @@
 
 namespace Sikessem\Capsule\Tests;
 
-use Sikessem\Capsule\BaseSetter;
+use Sikessem\Capsule\Bases\BaseSetter;
 use Sikessem\Capsule\Exceptions\SetterException;
 use Sikessem\Capsule\Interfaces\IsModifiable;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Sikessem\Capsule;
+namespace Sikessem\Capsule\Utils;
 
 use Closure;
 use ReflectionFunction;

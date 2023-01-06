@@ -74,7 +74,7 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
     ```php
     <?php
 
-    use Sikessem\Capsule\BaseCapsule;
+    use Sikessem\Capsule\Bases\BaseCapsule;
 
     class Capsule extends BaseCapsule
     {
@@ -85,7 +85,7 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
     ```php
     <?php
 
-    use Sikessem\Capsule\BaseGetter;
+    use Sikessem\Capsule\Bases\BaseGetter;
 
     class Getter extends BaseGetter
     {
@@ -96,7 +96,7 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
     ```php
     <?php
 
-    use Sikessem\Capsule\BaseSetter;
+    use Sikessem\Capsule\Bases\BaseSetter;
 
     class Setter extends BaseSetter
     {
