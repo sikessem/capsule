@@ -2,6 +2,7 @@
 
 namespace Sikessem\Capsule\Traits;
 
+use Sikessem\Capsule\Utils\Backtrace;
 use Throwable;
 
 trait HasTrigger
@@ -15,16 +16,19 @@ trait HasTrigger
             $message = sprintf($message, ...$arguments);
         }
 
-        $super = new static($message, $code, $previous);
+        $super = new static ($message, $code, $previous);
+        $trace = new Backtrace(limit: 3);
 
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
+        $file = $trace->getFile(0);
+        $line = $trace->getLine(0);
 
-        if (str_starts_with($trace['file'] ?? __FILE__, dirname(__DIR__))) {
-            $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2];
+        if (str_starts_with($file ?? __FILE__, dirname(__DIR__))) {
+            $file = $trace->getFile(1);
+            $line = $trace->getLine(1);
         }
 
-        $super->file = $trace['file'] ??= __FILE__;
-        $super->line = $trace['line'] ??= __LINE__;
+        $super->file = $file ?? __FILE__;
+        $super->line = $line ?? __LINE__;
 
         return $super;
     }
