@@ -26,7 +26,7 @@ Capsule allows to get/set a property thanks to the magic methods of PHP by defin
 
 ## 📋 Requirements
 
-> - **Requires [PHP 8.0+](https://php.net/releases/)** (at least 8.0.26 recommended to avoid potential bugs).
+> - **Requires [PHP 8.1+](https://php.net/releases/)** (at least 8.1.14 recommended to avoid potential bugs).
 > - **Requires [Composer v2+](https://getcomposer.org/)** to manage PHP dependencies.
 
 ## ⚡️ Installation
