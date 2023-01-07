@@ -29,21 +29,10 @@ final class Reflector
      */
     public static function invokeArgs(array|string|object|callable $callback, array $arguments = []): mixed
     {
-        if (self::isMethod($callback)) {
-            if (is_array($callback) && is_object($callback[0]) && is_string($callback[1])) {
-                $object = $callback[0];
-                $method = $callback[1];
-            } elseif (is_object($callback) && method_exists($callback, '__invoke')) {
-                $object = $callback;
-                $method = '__invoke';
-            } elseif (is_string($callback)) {
-                $object = null;
-                $method = $callback;
-            } else {
-                throw ReflectorException::create('Invalid method callback given');
-            }
+        $callback = Callback::from($callback);
 
-            $method = isset($object)
+        if ($method = $callback->getMethod()) {
+            $method = ($object = $callback->getObject())
             ? self::reflectMethod($object, $method)
             : self::reflectMethod($method);
 
@@ -79,16 +68,9 @@ final class Reflector
         return self::resolveReturnType($function, $result);
     }
 
-    /**
-     * @param array<object|string>|string|object|callable(mixed ...$args): mixed $callback
-     */
-    public static function reflectCallback(array|string|object|callable $callback): ReflectionFunction
+    public static function reflectCallback(Callback $callback): ReflectionFunction
     {
-        if (! is_callable($callback)) {
-            throw ReflectorException::create('The callback must be callable.');
-        }
-
-        return self::reflectFunction(Closure::fromCallable($callback));
+        return self::reflectFunction($callback->toClosure());
     }
 
     /**
@@ -271,29 +253,5 @@ final class Reflector
         }
 
         return false;
-    }
-
-    /**
-     * @param array<object|string>|string|object|callable(mixed ...$args): mixed $callback
-     */
-    public static function isMethod(array|string|object|callable $callback): bool
-    {
-        if (! is_callable($callback)) {
-            return false;
-        }
-
-        if (is_string($callback) && str_contains($callback, '::')) {
-            return true;
-        }
-
-        if (is_array($callback)) {
-            return true;
-        }
-
-        if (! is_object($callback)) {
-            return false;
-        }
-
-        return method_exists($callback, '__invoke');
     }
 }
