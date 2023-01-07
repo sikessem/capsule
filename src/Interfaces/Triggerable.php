@@ -4,7 +4,7 @@ namespace Sikessem\Capsule\Interfaces;
 
 use Throwable;
 
-interface ExceptionInterface extends Throwable
+interface Triggerable extends Throwable
 {
     /**
      * @param  array<string|int>  $arguments

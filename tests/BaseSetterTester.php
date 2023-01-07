@@ -4,7 +4,7 @@ namespace Sikessem\Capsule\Tests;
 
 use Sikessem\Capsule\Bases\BaseSetter;
 use Sikessem\Capsule\Exceptions\SetterException;
-use Sikessem\Capsule\Interfaces\IsModifiable;
+use Sikessem\Capsule\Interfaces\Modifiable;
 
 beforeEach(function () {
     $this->setter = new class() extends BaseSetter
@@ -14,7 +14,7 @@ beforeEach(function () {
 
 it('should be accessible', function () {
     expect($this->setter)
-    ->toBeInstanceOf(IsModifiable::class);
+    ->toBeInstanceOf(Modifiable::class);
 });
 
 it('throws a SetterException when mutating an unsupported property', function () {

@@ -2,12 +2,12 @@
 
 namespace Sikessem\Capsule\Interfaces;
 
-interface IsModifiable
+interface Modifiable
 {
     /**
      * Allows you to modify a property
      *
-     * @throws ExceptionInterface When property is not defined
+     * @throws Triggerable When property is not defined
      */
     public function __set(string $name, mixed $value): void;
 

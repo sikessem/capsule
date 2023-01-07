@@ -4,7 +4,7 @@ namespace Sikessem\Capsule\Tests;
 
 use Sikessem\Capsule\Bases\BaseGetter;
 use Sikessem\Capsule\Exceptions\GetterException;
-use Sikessem\Capsule\Interfaces\IsAccessible;
+use Sikessem\Capsule\Interfaces\Accessible;
 
 beforeEach(function () {
     $this->getter = new class() extends BaseGetter
@@ -14,7 +14,7 @@ beforeEach(function () {
 
 it('should be accessible', function () {
     expect($this->getter)
-    ->toBeInstanceOf(IsAccessible::class);
+    ->toBeInstanceOf(Accessible::class);
 });
 
 it('throws a GetterException when an unsupported property is accessed', function () {

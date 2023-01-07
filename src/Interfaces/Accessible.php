@@ -2,12 +2,12 @@
 
 namespace Sikessem\Capsule\Interfaces;
 
-interface IsAccessible
+interface Accessible
 {
     /**
      * Provides access to a property
      *
-     * @throws ExceptionInterface When property is not accessible
+     * @throws Triggerable When property is not accessible
      */
     public function __get(string $name): mixed;
 

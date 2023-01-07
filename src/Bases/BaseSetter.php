@@ -2,13 +2,13 @@
 
 namespace Sikessem\Capsule\Bases;
 
-use Sikessem\Capsule\Interfaces\IsModifiable;
-use Sikessem\Capsule\Traits\HasModifier;
+use Sikessem\Capsule\Interfaces\Modifiable;
+use Sikessem\Capsule\Traits\Modifier;
 
 /**
  * Allows you to modify class properties dynamically
  */
-abstract class BaseSetter implements IsModifiable
+abstract class BaseSetter implements Modifiable
 {
-    use HasModifier;
+    use Modifier;
 }

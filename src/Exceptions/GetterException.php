@@ -2,10 +2,10 @@
 
 namespace Sikessem\Capsule\Exceptions;
 
-use Sikessem\Capsule\Interfaces\ExceptionInterface;
-use Sikessem\Capsule\Traits\HasTrigger;
+use Sikessem\Capsule\Interfaces\Triggerable;
+use Sikessem\Capsule\Traits\Trigger;
 
-final class GetterException extends \BadMethodCallException implements ExceptionInterface
+final class GetterException extends \BadMethodCallException implements Triggerable
 {
-    use HasTrigger;
+    use Trigger;
 }

@@ -5,7 +5,7 @@ namespace Sikessem\Capsule\Traits;
 use Sikessem\Capsule\Exceptions\GetterException;
 use Sikessem\Capsule\Utils\Reflector;
 
-trait HasAccessor
+trait Accessor
 {
     /**
      * Access object properties using get methods or property value

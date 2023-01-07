@@ -5,7 +5,7 @@ namespace Sikessem\Capsule\Traits;
 use Sikessem\Capsule\Exceptions\SetterException;
 use Sikessem\Capsule\Utils\Reflector;
 
-trait HasModifier
+trait Modifier
 {
     /**
      * Modify the value of an object's properties using set methods

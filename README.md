@@ -56,14 +56,14 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
     ```php
     <?php
 
-    use Sikessem\Capsule\Interfaces\IsAccessible;
-    use Sikessem\Capsule\Interfaces\IsModifiable;
-    use Sikessem\Capsule\Traits\HasAccessor;
-    use Sikessem\Capsule\Traits\HasModifier;
+    use Sikessem\Capsule\Interfaces\Accessible;
+    use Sikessem\Capsule\Interfaces\Modifiable;
+    use Sikessem\Capsule\Traits\Accessor;
+    use Sikessem\Capsule\Traits\Modifier;
 
-    class Capsule implements IsAccessible, IsModifiable
+    class Capsule implements Accessible, Modifiable
     {
-        use HasAccessor, HasModifier;
+        use Accessor, Modifier;
 
         // The Capsule code...
     }
@@ -111,14 +111,14 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
 
     namespace App;
 
-    use Sikessem\Capsule\Interfaces\IsAccessible;
-    use Sikessem\Capsule\Interfaces\IsModifiable;
-    use Sikessem\Capsule\Traits\HasAccessor;
-    use Sikessem\Capsule\Traits\HasModifier;
+    use Sikessem\Capsule\Interfaces\Accessible;
+    use Sikessem\Capsule\Interfaces\Modifiable;
+    use Sikessem\Capsule\Traits\Accessor;
+    use Sikessem\Capsule\Traits\Modifier;
 
-    class Capsule implements IsAccessible, IsModifiable
+    class Capsule implements Accessible, Modifiable
     {
-        use HasAccessor, HasModifier;
+        use Accessor, Modifier;
 
         public function getName(): string
         {

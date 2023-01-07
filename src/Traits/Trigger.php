@@ -5,7 +5,7 @@ namespace Sikessem\Capsule\Traits;
 use Sikessem\Capsule\Utils\Backtrace;
 use Throwable;
 
-trait HasTrigger
+trait Trigger
 {
     /**
      * @param  array<string|int>  $arguments

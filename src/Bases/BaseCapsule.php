@@ -2,15 +2,15 @@
 
 namespace Sikessem\Capsule\Bases;
 
-use Sikessem\Capsule\Interfaces\IsAccessible;
-use Sikessem\Capsule\Interfaces\IsModifiable;
-use Sikessem\Capsule\Traits\HasAccessor;
-use Sikessem\Capsule\Traits\HasModifier;
+use Sikessem\Capsule\Interfaces\Accessible;
+use Sikessem\Capsule\Interfaces\Modifiable;
+use Sikessem\Capsule\Traits\Accessor;
+use Sikessem\Capsule\Traits\Modifier;
 
 /**
  * Allows access to modify the properties of the class dynamically
  */
-abstract class BaseCapsule implements IsAccessible, IsModifiable
+abstract class BaseCapsule implements Accessible, Modifiable
 {
-    use HasAccessor, HasModifier;
+    use Accessor, Modifier;
 }
