@@ -1,5 +1,5 @@
 <div align="center">
-    <div><a href="https://sikessem.com/" title="Sikessem"><img src="https://github.com/sikessem/.github/blob/HEAD/sikessem.svg" alt="Sikessem logo" height="256"/></a></div>
+    <div><a href="https://sikessem.com/" title="Sikessem"><img src="https://github.com/sikessem/art/blob/HEAD/images/sikessem.svg" alt="Sikessem logo" height="256"/></a></div>
     <div>
         <a href="https://github.com/sikessem/capsule"><img alt="Capsule" src="https://img.shields.io/badge/Capsule-enabled-brightgreen.svg?style=flat"/></a>
         <a href="https://github.com/sikessem/capsule/blob/HEAD/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Capsule is released under the MIT license."/></a>
@@ -19,10 +19,12 @@ Capsule allows to get/set a property thanks to the magic methods of PHP by defin
 
 ## 🔖 Contents
 
-- [Requirements](#-requirements)
-- [Installation](#%EF%B8%8F-installation)
-- [Usage](#-usage)
-- [Security Reports](#-security-reports)
+- [Get/set PHP class properties dynamically](#getset-php-class-properties-dynamically)
+  - [🔖 Contents](#-contents)
+  - [📋 Requirements](#-requirements)
+  - [⚡️ Installation](#️-installation)
+  - [🧑‍💻 Usage](#-usage)
+  - [🔐 Security Reports](#-security-reports)
 
 ## 📋 Requirements
 
