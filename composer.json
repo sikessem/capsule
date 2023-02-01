@@ -1,6 +1,6 @@
 {
     "name": "sikessem/capsule",
-    "description": "Encapsulate properties and use accessor/mutator methods",
+    "description": "Capsule allows encapsulating properties and then using accessor/modifier methods to manage. Capsule also allows to define methods on an object/class dynamically.",
     "homepage": "https://github.com/sikessem/capsule#readme",
     "keywords": [
         "capsule",

@@ -4,15 +4,17 @@ namespace Sikessem\Capsule\Tests;
 
 use Sikessem\Capsule\Interfaces\Accessible;
 use Sikessem\Capsule\Interfaces\Modifiable;
+use Sikessem\Capsule\Interfaces\Resolvable;
 
 beforeEach(function () {
     $this->capsule = new TestCapsule();
 });
 
-it('should be accessible and mutable', function () {
+it('should be accessible, modifiable and resolvable', function () {
     expect($this->capsule)
     ->toBeInstanceOf(Accessible::class)
-    ->toBeInstanceOf(Modifiable::class);
+    ->toBeInstanceOf(Modifiable::class)
+    ->toBeInstanceOf(Resolvable::class);
 });
 
 it('should set and get myProperty dynamically', function () {

@@ -15,7 +15,7 @@
 
 # Get/set PHP class properties dynamically
 
-Capsule allows to get/set a property thanks to the magic methods of PHP by defining the getter/setter of this property.
+Capsule allows you to get/set a property and add methods to an object and/or a class dynamically thanks to the magic methods of PHP by defining the getter/setter of the property and/or the method to add.
 
 ## 🔖 Contents
 
@@ -40,7 +40,7 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
     ```json
     {
         "require" : {
-            "sikessem/capsule": "^0.3"
+            "sikessem/capsule": "^0.4"
         }
     }
     ```
@@ -60,18 +60,20 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
 
     use Sikessem\Capsule\Interfaces\Accessible;
     use Sikessem\Capsule\Interfaces\Modifiable;
+    use Sikessem\Capsule\Interfaces\Resolvable;
     use Sikessem\Capsule\Traits\Accessor;
     use Sikessem\Capsule\Traits\Modifier;
+    use Sikessem\Capsule\Traits\Resolver;
 
-    class Capsule implements Accessible, Modifiable
+    class Capsule implements Accessible, Modifiable, Resolvable
     {
-        use Accessor, Modifier;
+        use Accessor, Modifier, Resolver;
 
         // The Capsule code...
     }
     ```
 
-- Or you can use Base Capsule or Base Getter/Setter:
+- Or you can use Base Capsule or Base Getter/Setter/Caller:
 
     ```php
     <?php
@@ -106,6 +108,17 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
     }
     ```
 
+    ```php
+    <?php
+
+    use Sikessem\Capsule\Bases\BaseCaller;
+
+    class Setter extends BaseCaller
+    {
+        // The Setter code...
+    }
+    ```
+
 1. Consider the Capsule below:
 
     ```php
@@ -115,12 +128,14 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
 
     use Sikessem\Capsule\Interfaces\Accessible;
     use Sikessem\Capsule\Interfaces\Modifiable;
+    use Sikessem\Capsule\Interfaces\Resolvable;
     use Sikessem\Capsule\Traits\Accessor;
     use Sikessem\Capsule\Traits\Modifier;
+    use Sikessem\Capsule\Traits\Resolver;
 
-    class Capsule implements Accessible, Modifiable
+    class Capsule implements Accessible, Modifiable, Resovable
     {
-        use Accessor, Modifier;
+        use Accessor, Modifier, Resolver;
 
         public function getName(): string
         {
@@ -167,6 +182,12 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
     unset($capsule->value); // Remove the value
 
     isset($capsule->value); // Returns false
+
+    $capsule->on('hello', function (?string $name = null) {
+        return 'Hello '.($name ?? 'Sikessem').'!';
+    });
+
+    echo $capsule->hello(); //Prints "Hello Sikessem!"
     ```
 
 ## 🔐 Security Reports
