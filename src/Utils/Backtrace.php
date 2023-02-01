@@ -30,6 +30,11 @@ final class Backtrace
 
     public const DEFAULT_OFFSET = 0;
 
+    /**
+     * @var list<array{function: string, line?: int, file?: string, class?: class-string, type?: string, args?: list<mixed>, object?: object}>
+     */
+    private array $stack = [];
+
     public function __construct(int $flags = self::DEFAULT_FLAGS, int $limit = self::DEFAULT_LIMIT)
     {
         if ($limit !== 0) {
@@ -42,12 +47,7 @@ final class Backtrace
     }
 
     /**
-     * @var array<int,array{function?:string,line?:int,file?:string,class?:class-string,type?:'->'|'::',args?:mixed[],object?:object}>
-     */
-    private array $stack = [];
-
-    /**
-     * @return array<int,array{function?:string,line?:int,file?:string,class?:class-string,type?:'->'|'::',args?:mixed[],object?:object}>
+     * @return list<array{function: string, line?: int, file?: string, class?: class-string, type?: string, args?: list<mixed>, object?: object}>
      */
     public function getStack(int $offset = null): array
     {

@@ -41,7 +41,7 @@ final class Callback
             is_string($value)
             && str_contains($value, '::')
         ) {
-            $info = explode('::', $value, 2);
+            $info = explode('::', $value);
             $this->class = $info[0];
             $this->method = $info[1];
         } elseif (
