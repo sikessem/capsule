@@ -45,14 +45,12 @@
         }
     },
     "scripts": {
-        "shift": "rector",
-        "lint": "pint -v",
-        "format": "psalm --alter --issues=all --dry-run",
-        "test:init": [
-            "rector init",
-            "psalm --init",
-            "pest --init"
-        ],
+        "init:shift": "rector init",
+        "init:formats": "psalm --init",
+        "init:unit": "pest --init",
+        "fix:shift": "rector",
+        "fix:lint": "pint -v",
+        "fix:formats": "psalm --alter --issues=all --dry-run",
         "test:shift": "rector --dry-run",
         "test:lint": "pint --test -v",
         "test:types": "phpstan analyse --ansi --memory-limit=-1 --debug",
@@ -63,10 +61,20 @@
             "@test:formats"
         ],
         "test:unit": "pest --colors=always",
+        "init:test": [
+            "@init:shift",
+            "@init:formats",
+            "@init:unit"
+        ],
         "test": [
             "@test:shift",
             "@test:styles",
             "@test:unit"
+        ],
+        "fix": [
+            "@fix:lint",
+            "@fix:format",
+            "@fix:shift"
         ]
     },
     "extra": {
