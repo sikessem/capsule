@@ -1,6 +1,6 @@
 <?php
 
-namespace Sikessem\Capsule\Utils;
+namespace Sikessem\Capsule\Support;
 
 final class Backtrace
 {

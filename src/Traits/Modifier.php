@@ -3,7 +3,7 @@
 namespace Sikessem\Capsule\Traits;
 
 use Sikessem\Capsule\Exceptions\SetterException;
-use Sikessem\Capsule\Utils\Builder;
+use Sikessem\Capsule\Support\Builder;
 
 trait Modifier
 {

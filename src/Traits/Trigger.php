@@ -2,7 +2,7 @@
 
 namespace Sikessem\Capsule\Traits;
 
-use Sikessem\Capsule\Utils\Backtrace;
+use Sikessem\Capsule\Support\Backtrace;
 use Throwable;
 
 trait Trigger
