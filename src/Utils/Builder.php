@@ -86,7 +86,7 @@ final class Builder
                 }
 
                 /** @var mixed $value */
-                $value = $parameter->getDefaultValue();
+                $value = $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null;
             }
 
             /** @var mixed $value */
@@ -109,7 +109,7 @@ final class Builder
         $type = Reflector::reflectReturnType($function);
 
         if (is_null($type)) {
-            return null;
+            return $value;
         }
 
         if (! self::checkType($type, $value)) {
