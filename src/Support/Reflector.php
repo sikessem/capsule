@@ -3,11 +3,13 @@
 namespace Sikessem\Capsule\Support;
 
 use Closure;
+use ReflectionClass;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionIntersectionType;
 use ReflectionMethod;
 use ReflectionNamedType;
+use ReflectionParameter;
 use ReflectionProperty;
 use ReflectionType;
 use ReflectionUnionType;
@@ -15,6 +17,86 @@ use Sikessem\Capsule\Exceptions\ReflectorException;
 
 final class Reflector
 {
+    /**
+     * @template TObject of object
+     *
+     * @param  TObject|class-string<TObject>  $object_or_class
+     * @return ReflectionClass<TObject>
+     */
+    public static function reflectClass(object|string $object_or_class): ReflectionClass
+    {
+        return new ReflectionClass($object_or_class);
+    }
+
+    /**
+     * Tries to build the given instance.
+     *
+     * @template TObject of object
+     *
+     * @param  TObject|class-string<TObject>  $object_or_class
+     * @return TObject|null
+     */
+    public function instanciate(object|string $object_or_class, mixed ...$arguments): ?object
+    {
+        return self::instanciateArgs($object_or_class, $arguments);
+    }
+
+    /**
+     * Tries to build the given instance.
+     *
+     * @template TObject of object
+     *
+     * @param  TObject|class-string<TObject>  $object_or_class
+     * @param  mixed[]  $arguments
+     * @return TObject|null
+     */
+    public function instanciateArgs(object|string $object_or_class, array $arguments = []): ?object
+    {
+        $reflectionClass = self::reflectClass($object_or_class);
+
+        if ($reflectionClass->isInstantiable()) {
+            $constructor = $reflectionClass->getConstructor();
+
+            if ($constructor !== null) {
+                $values = self::resolveInputs($constructor, $arguments);
+
+                return $reflectionClass->newInstanceArgs($values);
+            }
+
+            return $reflectionClass->newInstance();
+        }
+
+        throw ReflectorException::create('The class %s cannot be instantiated.', [get_debug_type($object_or_class)]);
+    }
+
+    public static function getParameterClassName(ReflectionParameter $parameter): ?string
+    {
+        $type = $parameter->getType();
+
+        if (! $type instanceof ReflectionNamedType) {
+            return null;
+        }
+
+        if ($type->isBuiltin()) {
+            return null;
+        }
+
+        /** @var string|class-string|trait-string $name */
+        $name = $type->getName();
+
+        if (($class = $parameter->getDeclaringClass()) instanceof ReflectionClass) {
+            if ($name === 'self') {
+                return $class->getName();
+            }
+
+            if ($name === 'parent' && ($parent = $class->getParentClass()) instanceof ReflectionClass) {
+                return $parent->getName();
+            }
+        }
+
+        return $name;
+    }
+
     /**
      * @param array<object|string>|string|object|callable(mixed ...$args): mixed $callback
      */
