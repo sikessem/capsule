@@ -2,210 +2,60 @@
 
 namespace Sikessem\Capsule\Support;
 
-use ReflectionFunction;
-use ReflectionFunctionAbstract;
-use ReflectionIntersectionType;
-use ReflectionMethod;
-use ReflectionNamedType;
-use ReflectionType;
-use ReflectionUnionType;
-use Sikessem\Capsule\Exceptions\ReflectorException;
-
 final class Builder
 {
     /**
-     * @param array<object|string>|string|object|callable(mixed ...$args): mixed $callback
+     * @var array<class-string,mixed[]>
      */
-    public static function invoke(array|string|object|callable $callback, mixed ...$arguments): mixed
+    private array $inputs = [];
+
+    /**
+     * @var array<class-string,array<object|string>|string|object|callable(mixed ...$args): mixed>
+     */
+    private array $resolvers = [];
+
+    /**
+     * @param  array<class-string,mixed[]>  $inputs
+     * @param array<class-string,array<object|string>|string|object|callable(mixed ...$args): mixed> $resolvers
+     */
+    public function __construct(array $inputs = [], array $resolvers = [])
     {
-        return self::invokeArgs($callback, $arguments);
+        $this->setInputs($inputs)->setResolvers($resolvers);
     }
 
     /**
-     * @param  array<object|string>|string|object|callable(mixed ...$args): mixed  $callback
-     * @param  mixed[]  $arguments
+     * @param  array<class-string,mixed[]>  $inputs
      */
-    public static function invokeArgs(array|string|object|callable $callback, array $arguments = []): mixed
+    public function setInputs(array $inputs): static
     {
-        $callback = Callback::from($callback);
+        $this->inputs = $inputs;
 
-        if ($method = $callback->getMethod()) {
-            $method = ($object = $callback->getObject())
-            ? Reflector::reflectMethod($object, $method)
-            : Reflector::reflectMethod($method);
-
-            return self::invokeMethodArgs($method, $object, $arguments);
-        }
-
-        $function = Reflector::reflectCallback($callback);
-
-        return self::invokeFunctionArgs($function, $arguments);
+        return $this;
     }
 
     /**
-     * @param  mixed[]  $arguments
+     * @return array<class-string,mixed[]>
      */
-    public static function invokeMethodArgs(ReflectionMethod $method, ?object $object = null, array $arguments = []): mixed
+    public function getInputs(): array
     {
-        $argv = self::resolveParameters($method, $arguments);
-        /** @var mixed $result */
-        $result = $method->invokeArgs($object, $argv);
-
-        return self::resolveReturnType($method, $result);
+        return $this->inputs;
     }
 
     /**
-     * @param  mixed[]  $arguments
+     * @param array<class-string,array<object|string>|string|object|callable(mixed ...$args): mixed> $resolvers
      */
-    public static function invokeFunctionArgs(ReflectionFunction $function, array $arguments = []): mixed
+    public function setResolvers(array $resolvers): static
     {
-        $argv = self::resolveParameters($function, $arguments);
-        /** @var mixed $result */
-        $result = $function->invokeArgs($argv);
+        $this->resolvers = $resolvers;
 
-        return self::resolveReturnType($function, $result);
+        return $this;
     }
 
     /**
-     * @param  mixed[]  $arguments
-     * @return mixed[]
+     * @return array<class-string,array<object|string>|string|object|callable(mixed ...$args): mixed>
      */
-    public static function resolveParameters(ReflectionFunctionAbstract $function, array $arguments = []): array
+    public function getResolvers(): array
     {
-        /** @var mixed[] $values */
-        $values = [];
-        $key = 0;
-        foreach ($function->getParameters() as $parameter) {
-            $name = $parameter->getName();
-            /** @var mixed $value */
-            $value = $arguments[$name] ?? $arguments[$key] ?? null;
-
-            if (is_null($value)) {
-                if (! $parameter->isOptional()) {
-                    throw ReflectorException::create('Parameter %s value is required.', [$name]);
-                }
-
-                /** @var mixed $value */
-                $value = $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null;
-            }
-
-            /** @var mixed $value */
-            $value = self::resolveValue($value);
-
-            if (null !== ($type = $parameter->getType()) && ! self::checkType($type, $value)) {
-                throw ReflectorException::create('Parameter %s has invalid type.', [$name]);
-            }
-
-            /** @psalm-suppress MixedAssignment */
-            $values[] = $value;
-            $key++;
-        }
-
-        return $values;
-    }
-
-    public static function resolveReturnType(ReflectionFunctionAbstract $function, mixed $value): mixed
-    {
-        $type = Reflector::reflectReturnType($function);
-
-        if (is_null($type)) {
-            return $value;
-        }
-
-        if (! self::checkType($type, $value)) {
-            throw ReflectorException::create('Bad return type');
-        }
-
-        return self::resolveValue($value);
-    }
-
-    public static function resolveValue(mixed $value): mixed
-    {
-        return $value;
-    }
-
-    public static function checkType(ReflectionType $type, mixed $value): bool
-    {
-        if (is_null($value)) {
-            return $type->allowsNull();
-        }
-
-        if ($type instanceof ReflectionNamedType) {
-            return self::checkNamedType($type, $value);
-        }
-
-        if ($type instanceof ReflectionIntersectionType) {
-            return self::checkIntersectionType($type, $value);
-        }
-
-        if (! class_exists(ReflectionUnionType::class, false)) {
-            return false;
-        }
-
-        if (! $type instanceof ReflectionUnionType) {
-            return false;
-        }
-
-        return self::checkUnionType($type, $value);
-    }
-
-    public static function checkNamedType(ReflectionNamedType $type, mixed $value): bool
-    {
-        $name = $type->getName();
-
-        if ($name === 'mixed') {
-            return true;
-        }
-
-        if ($type->isBuiltin()) {
-            return $name === gettype($value);
-        }
-
-        return $value instanceof $name;
-    }
-
-    public static function checkIntersectionType(ReflectionIntersectionType $type, mixed $value): bool
-    {
-        foreach ($type->getTypes() as $t) {
-            if (! self::checkNamedType($t, $value)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public static function checkUnionType(ReflectionUnionType $type, mixed $value): bool
-    {
-        foreach ($type->getTypes() as $t) {
-            if (self::checkNamedType($t, $value)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static function getPropertyValue(object $object, string $name): mixed
-    {
-        $property = Reflector::reflectProperty($object, $name);
-        if ($property->isInitialized($object)) {
-            return $property->getValue($object);
-        }
-        if ($property->hasDefaultValue()) {
-            return $property->getValue($object);
-        }
-        throw ReflectorException::create('Cannot get property %s', [$name]);
-    }
-
-    public static function setPropertyValue(object $object, string $name, mixed $value): void
-    {
-        $property = Reflector::reflectProperty($object, $name);
-
-        if (null !== ($type = $property->getType()) && ! self::checkType($type, $value)) {
-            throw ReflectorException::create('Property %s has invalid type.', [$name]);
-        }
-
-        $property->setValue($object, $value);
+        return $this->resolvers;
     }
 }
