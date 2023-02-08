@@ -47,13 +47,13 @@
 
 ***
 
-# Get/set PHP class properties dynamically
+# An Efficient Dependency Injector and Encapsulator
 
-Capsule allows you to get/set a property and add methods to an object and/or a class dynamically thanks to the magic methods of PHP by defining the getter/setter of the property and/or the method to add.
+Capsule is a library that uses a Container to manage dependencies and objects in an organized and centralized way, thus facilitating encapsulation.
 
 ## 🔖 Contents
 
-- [Get/set PHP class properties dynamically](#getset-php-class-properties-dynamically)
+- [An Efficient Dependency Injector and Encapsulator](#an-efficient-dependency-injector-and-encapsulator)
   - [🔖 Contents](#-contents)
   - [📋 Requirements](#-requirements)
   - [⚡️ Installation](#️-installation)
