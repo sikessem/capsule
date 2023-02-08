@@ -150,35 +150,6 @@ final class Reflector
         return $value;
     }
 
-    public static function checkType(?ReflectionType $type, mixed $value): bool
-    {
-        if (null === $type) {
-            return true;
-        }
-
-        if (is_null($value)) {
-            return $type->allowsNull();
-        }
-
-        if ($type instanceof ReflectionNamedType) {
-            return self::checkNamedType($type, $value);
-        }
-
-        if ($type instanceof ReflectionIntersectionType) {
-            return self::checkIntersectionType($type, $value);
-        }
-
-        if (! class_exists(ReflectionUnionType::class, false)) {
-            return false;
-        }
-
-        if (! $type instanceof ReflectionUnionType) {
-            return false;
-        }
-
-        return self::checkUnionType($type, $value);
-    }
-
     /**
      * @param  list<class-string>  $classes
      */
@@ -280,12 +251,45 @@ final class Reflector
         return null;
     }
 
+    public static function checkType(?ReflectionType $type, mixed $value): bool
+    {
+        if (null === $type) {
+            return true;
+        }
+
+        if ($type instanceof ReflectionNamedType) {
+            return self::checkNamedType($type, $value);
+        }
+
+        if ($type instanceof ReflectionIntersectionType) {
+            return self::checkIntersectionType($type, $value);
+        }
+
+        if (! class_exists(ReflectionUnionType::class, false)) {
+            return false;
+        }
+
+        if (! $type instanceof ReflectionUnionType) {
+            return false;
+        }
+
+        return self::checkUnionType($type, $value);
+    }
+
     public static function checkNamedType(ReflectionNamedType $type, mixed $value): bool
     {
         $name = $type->getName();
 
         if ($name === 'mixed') {
             return true;
+        }
+
+        if ($name === 'void') {
+            return null === $value;
+        }
+
+        if (is_null($value)) {
+            return $type->allowsNull();
         }
 
         if ($type->isBuiltin()) {

@@ -233,8 +233,8 @@ final class Container implements ContainerInterface
             : $func->invokeArgs($args);
         }
 
-        if (! Reflector::checkType($func->getReturnType(), $result)) {
-            throw ContainerException::create('Unexpected return type');
+        if (! Reflector::checkType($type = $func->getReturnType(), $result)) {
+            throw ContainerException::create('%s expected but %s provided.', [(string) $type ?: 'mixed', get_debug_type($result)]);
         }
 
         return $result;
