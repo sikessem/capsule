@@ -1,7 +1,7 @@
 {
     "name": "sikessem/capsule",
     "description": "Capsule is designed to make it easier to manage dependencies and objects, while improving encapsulation and ensuring code quality.",
-    "homepage": "https://github.com/sikessem/capsule#readme",
+    "homepage": "https://packagist.org/packages/sikessem/capsule",
     "keywords": [
         "capsule",
         "encapsulation",
@@ -11,7 +11,17 @@
         "getter",
         "setter",
         "method",
-        "event"
+        "event",
+        "di",
+        "ioc",
+        "dic",
+        "container",
+        "psr",
+        "dependency-injection",
+        "injector",
+        "encapsulator",
+        "psr11",
+        "php"
     ],
     "type": "library",
     "license": "MIT",
