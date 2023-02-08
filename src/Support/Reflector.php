@@ -28,128 +28,6 @@ final class Reflector
         return new ReflectionClass($object_or_class);
     }
 
-    /**
-     * Tries to build the given instance.
-     *
-     * @template TObject of object
-     *
-     * @param  TObject|class-string<TObject>  $object_or_class
-     * @return TObject|null
-     */
-    public function instanciate(object|string $object_or_class, mixed ...$arguments): ?object
-    {
-        return self::instanciateArgs($object_or_class, $arguments);
-    }
-
-    /**
-     * Tries to build the given instance.
-     *
-     * @template TObject of object
-     *
-     * @param  TObject|class-string<TObject>  $object_or_class
-     * @param  mixed[]  $arguments
-     * @return TObject|null
-     */
-    public function instanciateArgs(object|string $object_or_class, array $arguments = []): ?object
-    {
-        $reflectionClass = self::reflectClass($object_or_class);
-
-        if ($reflectionClass->isInstantiable()) {
-            $constructor = $reflectionClass->getConstructor();
-
-            if ($constructor !== null) {
-                $values = self::resolveInputs($constructor, $arguments);
-
-                return $reflectionClass->newInstanceArgs($values);
-            }
-
-            return $reflectionClass->newInstance();
-        }
-
-        throw ReflectorException::create('The class %s cannot be instantiated.', [get_debug_type($object_or_class)]);
-    }
-
-    public static function getParameterClassName(ReflectionParameter $parameter): ?string
-    {
-        $type = $parameter->getType();
-
-        if (! $type instanceof ReflectionNamedType) {
-            return null;
-        }
-
-        if ($type->isBuiltin()) {
-            return null;
-        }
-
-        /** @var string|class-string|trait-string $name */
-        $name = $type->getName();
-
-        if (($class = $parameter->getDeclaringClass()) instanceof ReflectionClass) {
-            if ($name === 'self') {
-                return $class->getName();
-            }
-
-            if ($name === 'parent' && ($parent = $class->getParentClass()) instanceof ReflectionClass) {
-                return $parent->getName();
-            }
-        }
-
-        return $name;
-    }
-
-    /**
-     * @param array<object|string>|string|object|callable(mixed ...$args): mixed $callback
-     */
-    public static function invoke(array|string|object|callable $callback, mixed ...$arguments): mixed
-    {
-        return self::invokeArgs($callback, $arguments);
-    }
-
-    /**
-     * @param  array<object|string>|string|object|callable(mixed ...$args): mixed  $callback
-     * @param  mixed[]  $arguments
-     */
-    public static function invokeArgs(array|string|object|callable $callback, array $arguments = []): mixed
-    {
-        $callback = Callback::from($callback);
-
-        if ($method = $callback->getMethod()) {
-            $method = ($object = $callback->getObject())
-            ? self::reflectMethod($object, $method)
-            : self::reflectMethod($method);
-
-            return self::invokeMethodArgs($method, $object, $arguments);
-        }
-
-        $function = self::reflectCallback($callback);
-
-        return self::invokeFunctionArgs($function, $arguments);
-    }
-
-    /**
-     * @param  mixed[]  $arguments
-     */
-    public static function invokeMethodArgs(ReflectionMethod $method, ?object $object = null, array $arguments = []): mixed
-    {
-        $values = self::resolveInputs($method, $arguments);
-        /** @var mixed $result */
-        $result = $method->invokeArgs($object, $values);
-
-        return self::resolveReturnType($method, $result);
-    }
-
-    /**
-     * @param  mixed[]  $arguments
-     */
-    public static function invokeFunctionArgs(ReflectionFunction $function, array $arguments = []): mixed
-    {
-        $values = self::resolveInputs($function, $arguments);
-        /** @var mixed $result */
-        $result = $function->invokeArgs($values);
-
-        return self::resolveReturnType($function, $result);
-    }
-
     public static function reflectCallback(Callback $callback): ReflectionFunction
     {
         return self::reflectFunction($callback->toClosure());
@@ -176,6 +54,14 @@ final class Reflector
         throw ReflectorException::create('Cannot reflect a null or object method.');
     }
 
+    /**
+     * @param array<object|string>|string|object|callable(mixed ...$args): mixed $function
+     */
+    public static function reflectFunctionParameter(string|array|object|callable $function, int|string $position): ReflectionParameter
+    {
+        return new ReflectionParameter($function, $position);
+    }
+
     public static function reflectReturnType(ReflectionFunctionAbstract $function): ?ReflectionType
     {
         if ($function->hasTentativeReturnType()) {
@@ -194,37 +80,50 @@ final class Reflector
         return new ReflectionProperty($class, $property);
     }
 
+    public static function getPropertyValue(object $object, string $name): mixed
+    {
+        $property = self::reflectProperty($object, $name);
+        if ($property->isInitialized($object)) {
+            return $property->getValue($object);
+        }
+        if ($property->hasDefaultValue()) {
+            return $property->getValue($object);
+        }
+        throw ReflectorException::create('Cannot get property %s', [$name]);
+    }
+
+    public static function setPropertyValue(object $object, string $name, mixed $value): void
+    {
+        $property = self::reflectProperty($object, $name);
+
+        if (null !== ($type = $property->getType()) && ! self::checkType($type, $value)) {
+            throw ReflectorException::create('Property %s has invalid type.', [$name]);
+        }
+
+        $property->setValue($object, $value);
+    }
+
     /**
-     * @param  mixed[]  $arguments
+     * @param  mixed[]  $args
      * @return mixed[]
      */
-    public static function resolveInputs(ReflectionFunctionAbstract $function, array $arguments = []): array
+    public static function buildFunctionArgs(ReflectionFunctionAbstract $func, array $args = []): array
+    {
+        return self::buildParametersValues($func->getParameters(), $args);
+    }
+
+    /**
+     * @param  list<ReflectionParameter>  $params
+     * @param  mixed[]  $args
+     * @return mixed[]
+     */
+    public static function buildParametersValues(array $params, array $args): array
     {
         /** @var mixed[] $values */
         $values = [];
-        foreach ($function->getParameters() as $parameter) {
-            $name = $parameter->getName();
-            $position = $parameter->getPosition();
-
+        foreach ($params as $param) {
             /** @var mixed $value */
-            $value = $arguments[$name] ?? $arguments[$position] ?? null;
-
-            if (is_null($value)) {
-                if (! $parameter->isOptional()) {
-                    throw ReflectorException::create('Parameter %s value is required.', [$name]);
-                }
-
-                /** @var mixed $value */
-                $value = $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null;
-            }
-
-            /** @var mixed $value */
-            $value = self::resolveValue($value);
-
-            if (null !== ($type = $parameter->getType()) && ! self::checkType($type, $value)) {
-                throw ReflectorException::create('Parameter %s has invalid type.', [$name]);
-            }
-
+            $value = self::buildParameterValue($param, $args);
             /** @psalm-suppress MixedAssignment */
             $values[] = $value;
         }
@@ -232,28 +131,28 @@ final class Reflector
         return $values;
     }
 
-    public static function resolveReturnType(ReflectionFunctionAbstract $function, mixed $value): mixed
+    public static function buildParameterValue(ReflectionParameter $param, array $args = []): mixed
     {
-        $type = self::reflectReturnType($function);
+        $name = $param->getName();
+        $position = $param->getPosition();
 
-        if (is_null($type)) {
-            return $value;
+        /** @var mixed $value */
+        $value = $args[$name] ?? $args[$position] ?? null;
+
+        if (is_null($value) && $param->isOptional()) {
+            /** @var mixed $value */
+            $value = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
         }
 
-        if (! self::checkType($type, $value)) {
-            throw ReflectorException::create('Bad return type');
-        }
-
-        return self::resolveValue($value);
-    }
-
-    public static function resolveValue(mixed $value): mixed
-    {
         return $value;
     }
 
-    public static function checkType(ReflectionType $type, mixed $value): bool
+    public static function checkType(?ReflectionType $type, mixed $value): bool
     {
+        if (null === $type) {
+            return true;
+        }
+
         if (is_null($value)) {
             return $type->allowsNull();
         }
@@ -275,6 +174,107 @@ final class Reflector
         }
 
         return self::checkUnionType($type, $value);
+    }
+
+    /**
+     * @param  list<class-string>  $classes
+     */
+    public static function getParameterClassName(ReflectionParameter $param, array $classes = []): ?string
+    {
+        $type = $param->getType();
+
+        if (! $type instanceof ReflectionType) {
+            return null;
+        }
+
+        return self::getParameterClassNameByType($type, $param, $classes);
+    }
+
+    /**
+     * @param  list<class-string>  $classes
+     */
+    public static function getParameterClassNameByType(ReflectionType $type, ReflectionParameter $param, array $classes = []): ?string
+    {
+        if ($type instanceof ReflectionNamedType) {
+            return self::getParameterClassNameByNamedType($type, $param, $classes);
+        }
+
+        if ($type instanceof ReflectionUnionType) {
+            return self::getParameterClassNameByUnionType($type, $param, $classes);
+        }
+
+        if ($type instanceof ReflectionIntersectionType) {
+            return self::getParameterClassNameByIntersectionType($type, $param, $classes);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  list<class-string>  $classes
+     */
+    public static function getParameterClassNameByNamedType(ReflectionNamedType $type, ReflectionParameter $param, array $classes = []): ?string
+    {
+        if ($type->isBuiltin()) {
+            return null;
+        }
+
+        /** @var string|class-string|trait-string $name */
+        $name = $type->getName();
+
+        if (($class = $param->getDeclaringClass()) instanceof ReflectionClass) {
+            if ($name === 'self') {
+                return $class->getName();
+            }
+
+            if ($name === 'parent' && ($parent = $class->getParentClass()) instanceof ReflectionClass) {
+                return $parent->getName();
+            }
+        }
+
+        if (class_exists($name) || interface_exists($name)) {
+            foreach ($classes as $class) {
+                if ($class instanceof $name) {
+                    return $class;
+                }
+            }
+        }
+
+        return $name;
+    }
+
+    /**
+     * @param  list<class-string>  $classes
+     */
+    public static function getParameterClassNameByUnionType(ReflectionUnionType $type, ReflectionParameter $param, array $classes = []): ?string
+    {
+        foreach ($type->getTypes() as $t) {
+            if ($class = self::getParameterClassNameByType($t, $param, $classes)) {
+                return $class;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  list<class-string>  $classes
+     */
+    public static function getParameterClassNameByIntersectionType(ReflectionIntersectionType $type, ReflectionParameter $param, array $classes = []): ?string
+    {
+        foreach ($type->getTypes() as $t) {
+            while ($classes !== [] && ($class = self::getParameterClassNameByType($t, $param, $classes))) {
+                if (self::checkIntersectionType($type, $class)) {
+                    return $class;
+                }
+
+                if (false !== ($key = array_search($class, $classes, true))) {
+                    array_splice($classes, $key, 1);
+                }
+            }
+        }
+
+        return null;
     }
 
     public static function checkNamedType(ReflectionNamedType $type, mixed $value): bool
@@ -306,34 +306,11 @@ final class Reflector
     public static function checkUnionType(ReflectionUnionType $type, mixed $value): bool
     {
         foreach ($type->getTypes() as $t) {
-            if (self::checkNamedType($t, $value)) {
+            if (self::checkType($t, $value)) {
                 return true;
             }
         }
 
         return false;
-    }
-
-    public static function getPropertyValue(object $object, string $name): mixed
-    {
-        $property = self::reflectProperty($object, $name);
-        if ($property->isInitialized($object)) {
-            return $property->getValue($object);
-        }
-        if ($property->hasDefaultValue()) {
-            return $property->getValue($object);
-        }
-        throw ReflectorException::create('Cannot get property %s', [$name]);
-    }
-
-    public static function setPropertyValue(object $object, string $name, mixed $value): void
-    {
-        $property = self::reflectProperty($object, $name);
-
-        if (null !== ($type = $property->getType()) && ! self::checkType($type, $value)) {
-            throw ReflectorException::create('Property %s has invalid type.', [$name]);
-        }
-
-        $property->setValue($object, $value);
     }
 }
