@@ -55,7 +55,7 @@ final class Reflector
     }
 
     /**
-     * @param array<object|string>|string|object|callable(mixed ...$args): mixed $function
+     * @param  array<object|string>|string|object  $function
      */
     public static function reflectFunctionParameter(string|array|object|callable $function, int|string $position): ReflectionParameter
     {
@@ -131,6 +131,9 @@ final class Reflector
         return $values;
     }
 
+    /**
+     * @param  mixed[]  $args
+     */
     public static function buildParameterValue(ReflectionParameter $param, array $args = []): mixed
     {
         $name = $param->getName();
