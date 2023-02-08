@@ -8,6 +8,18 @@ use Sikessem\Capsule\Exceptions\CallbackException;
 final class Callback
 {
     /**
+     * @var array<object|string>|string|object|callable(mixed ...$args): mixed
+     */
+    private $value;
+
+    private ?string $method = null;
+
+    /**
+     * @var null|string|callable(mixed ...$args): mixed
+     */
+    private $function;
+
+    /**
      * @param array<object|string>|string|object|callable(mixed ...$args): mixed $value
      */
     public function __construct(array|string|object|callable $value)
@@ -22,11 +34,6 @@ final class Callback
     {
         return new self($value);
     }
-
-    /**
-     * @var array<object|string>|string|object|callable(mixed ...$args): mixed
-     */
-    private $value;
 
     /**
      * @param array<object|string>|string|object|callable(mixed ...$args): mixed $value
@@ -98,8 +105,6 @@ final class Callback
         return isset($this->object);
     }
 
-    private ?string $method = null;
-
     public function getMethod(): ?string
     {
         return $this->method;
@@ -109,11 +114,6 @@ final class Callback
     {
         return isset($this->method);
     }
-
-    /**
-     * @var null|string|callable(mixed ...$args): mixed
-     */
-    private $function;
 
     /**
      * @return null|string|callable(mixed ...$args): mixed

@@ -3,7 +3,7 @@
 namespace Sikessem\Capsule\Traits;
 
 use Sikessem\Capsule\Exceptions\CallerException;
-use Sikessem\Capsule\Support\Reflector;
+use Sikessem\Capsule\Support\Singleton;
 
 trait Resolver
 {
@@ -46,7 +46,7 @@ trait Resolver
     {
         foreach ($this->actions as $_name => $action) {
             if ($_name == $name) {
-                return Reflector::invoke($action, ...$args);
+                return Singleton::getContainer()->invoke($action, ...$args);
             }
         }
 
@@ -64,7 +64,7 @@ trait Resolver
     {
         foreach (static::$ACTIONS as $_name => $action) {
             if ($_name === $name) {
-                return Reflector::invoke($action, ...$args);
+                return Singleton::getContainer()->invoke($action, ...$args);
             }
         }
 
