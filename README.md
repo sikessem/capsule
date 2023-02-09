@@ -92,135 +92,86 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
 
 ## 🧑‍💻 Usage
 
-- Define your custom capsule using Capsule's interface and traits:
+1. Define your custom components using Capsule's interfaces and traits:
 
     ```php
     <?php
 
-    use Sikessem\Capsule\Interfaces\Accessible;
-    use Sikessem\Capsule\Interfaces\Modifiable;
-    use Sikessem\Capsule\Interfaces\Resolvable;
-    use Sikessem\Capsule\Traits\Accessor;
-    use Sikessem\Capsule\Traits\Modifier;
-    use Sikessem\Capsule\Traits\Resolver;
+    namespace Sikessem\Capsule\Sample;
 
-    class Capsule implements Accessible, Modifiable, Resolvable
+    use Sikessem\Capsule\IsEncapsulated;
+
+    interface CustomInterface extends IsEncapsulated
     {
-        use Accessor, Modifier, Resolver;
+        public function getName(): string;
 
-        // The Capsule code...
-    }
-    ```
-
-- Or you can use Base Capsule or Base Getter/Setter/Caller:
-
-    ```php
-    <?php
-
-    use Sikessem\Capsule\Bases\BaseCapsule;
-
-    class Capsule extends BaseCapsule
-    {
-        // The Capsule code...
+        public function setName(string $name): void;
     }
     ```
 
     ```php
     <?php
 
-    use Sikessem\Capsule\Bases\BaseGetter;
+    namespace Sikessem\Capsule\Sample;
 
-    class Getter extends BaseGetter
+    final class CustomClass implements CustomInterface
     {
-        // The Getter code...
+        use CustomTrait;
+
+        public function __construct(string $name = 'World')
+        {
+            $this->setName($name);
+        }
     }
     ```
 
     ```php
     <?php
 
-    use Sikessem\Capsule\Bases\BaseSetter;
+    namespace Sikessem\Capsule\Sample;
 
-    class Setter extends BaseSetter
+    use Sikessem\Capsule\HasEncapsulator;
+
+    trait CustomTrait
     {
-        // The Setter code...
-    }
-    ```
+        use HasEncapsulator;
 
-    ```php
-    <?php
-
-    use Sikessem\Capsule\Bases\BaseCaller;
-
-    class Setter extends BaseCaller
-    {
-        // The Setter code...
-    }
-    ```
-
-1. Consider the Capsule below:
-
-    ```php
-    <?php
-
-    namespace App;
-
-    use Sikessem\Capsule\Interfaces\Accessible;
-    use Sikessem\Capsule\Interfaces\Modifiable;
-    use Sikessem\Capsule\Interfaces\Resolvable;
-    use Sikessem\Capsule\Traits\Accessor;
-    use Sikessem\Capsule\Traits\Modifier;
-    use Sikessem\Capsule\Traits\Resolver;
-
-    class Capsule implements Accessible, Modifiable, Resovable
-    {
-        use Accessor, Modifier, Resolver;
+        protected string $name;
 
         public function getName(): string
         {
-            return 'capsule';
+            return $this->name;
         }
 
-        protected mixed $value = null;
-
-        public function setValue(mixed $value = null): void
+        public function setName(string $name): void
         {
-            if (isset($value)) {
-                $this->value = $value;
-            } else {
-                unset($this->value);
-            }
-            
+            $this->name = $name;
         }
     }
     ```
 
-2. You can use the capsule as below:
+2. You can use your components as below:
 
     ```php
     <?php
 
-    use App\Capsule;
+    use Sikessem\Capsule\Sample\CustomClass;
 
-    $capsule = new Capsule();
+    $capsule = new CustomClass('Sikessem');
 
     isset($capsule->name); // Returns true
 
-    echo $capsule->name; // Prints "capsule"
+    echo $capsule->name; // Prints "Sikessem"
 
     unset($capsule->name); // Does nothing
 
     isset($capsule->name); // Returns true
 
-    $capsule->name = 'value'; // Throws an exception
+    $capsule->value = 'value'; // Throws an exception
 
-    $capsule->value = 'value'; // Set value to "value"
+    $capsule->name = 'value'; // Set name to "value"
 
-    echo $capsule->value; // Prints "value"
-
-    unset($capsule->value); // Remove the value
-
-    isset($capsule->value); // Returns false
+    echo $capsule->name; // Prints "value"
 
     $capsule->on('hello', function (?string $name = null) {
         return 'Hello '.($name ?? 'Sikessem').'!';

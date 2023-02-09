@@ -6,8 +6,8 @@ use Psr\Container\ContainerInterface;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
-use Sikessem\Capsule\Exceptions\ContainerException;
-use Sikessem\Capsule\Exceptions\NotFoundException;
+use Sikessem\Capsule\Exception\BadValue;
+use Sikessem\Capsule\Exception\NotFound;
 
 final class Container implements ContainerInterface
 {
@@ -72,7 +72,7 @@ final class Container implements ContainerInterface
     public function build(string $id): mixed
     {
         if (! isset($this->components[$id])) {
-            throw NotFoundException::create('Component %s not found.', [$id]);
+            throw NotFound::with('Component %s not found.', [$id]);
         }
 
         $component = $this->components[$id];
@@ -182,7 +182,7 @@ final class Container implements ContainerInterface
             return $reflectionClass->newInstance();
         }
 
-        throw ContainerException::create('The class %s cannot be instantiated.', [$object_or_class::class]);
+        throw BadValue::with('The class %s cannot be instantiated.', [$object_or_class::class]);
     }
 
     /**
@@ -234,7 +234,7 @@ final class Container implements ContainerInterface
         }
 
         if (! Reflector::checkType($type = $func->getReturnType(), $result)) {
-            throw ContainerException::create('%s expected but %s provided.', [(string) $type ?: 'mixed', get_debug_type($result)]);
+            throw BadValue::with('%s expected but %s provided.', [(string) $type ?: 'mixed', get_debug_type($result)]);
         }
 
         return $result;

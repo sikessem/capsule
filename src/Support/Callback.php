@@ -3,7 +3,7 @@
 namespace Sikessem\Capsule\Support;
 
 use Closure;
-use Sikessem\Capsule\Exceptions\CallbackException;
+use Sikessem\Capsule\Exception\UnableToCall;
 
 final class Callback
 {
@@ -41,7 +41,7 @@ final class Callback
     public function setValue(array|string|object|callable $value): static
     {
         if (! is_callable($value)) {
-            throw CallbackException::create('The callback value must be callable.');
+            throw UnableToCall::with('The callback value must be callable.');
         }
 
         if (
@@ -131,7 +131,7 @@ final class Callback
     public function toClosure(): Closure
     {
         if (! is_callable($this->value)) {
-            throw CallbackException::create('The callback value must be callable.');
+            throw UnableToCall::with('The callback value must be callable.');
         }
 
         return Closure::fromCallable($this->value);

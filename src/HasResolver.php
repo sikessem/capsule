@@ -1,11 +1,11 @@
 <?php
 
-namespace Sikessem\Capsule\Traits;
+namespace Sikessem\Capsule;
 
-use Sikessem\Capsule\Exceptions\CallerException;
+use Sikessem\Capsule\Exception\NotFound;
 use Sikessem\Capsule\Support\Singleton;
 
-trait Resolver
+trait HasResolver
 {
     /**
      * @var array<string,array<object|string>|string|object|callable(mixed ...$args): mixed>
@@ -40,7 +40,7 @@ trait Resolver
      *
      * @param  array<mixed>  $args
      *
-     * @throws CallerException When action is not defined
+     * @throws NotFound When action is not defined
      */
     public function resolve(string $name, array $args = []): mixed
     {
@@ -50,7 +50,7 @@ trait Resolver
             }
         }
 
-        throw CallerException::create('Could not find action %s.', [$name]);
+        throw NotFound::with('Could not find action %s.', [$name]);
     }
 
     /**
@@ -58,7 +58,7 @@ trait Resolver
      *
      * @param  array<mixed>  $args
      *
-     * @throws CallerException When action is not defined
+     * @throws NotFound When action is not defined
      */
     public static function resolveStatic(string $name, array $args = []): mixed
     {
@@ -68,7 +68,7 @@ trait Resolver
             }
         }
 
-        throw CallerException::create('Could not find static action %s.', [$name]);
+        throw NotFound::with('Could not find static action %s.', [$name]);
     }
 
     /**

@@ -13,7 +13,7 @@ use ReflectionParameter;
 use ReflectionProperty;
 use ReflectionType;
 use ReflectionUnionType;
-use Sikessem\Capsule\Exceptions\ReflectorException;
+use Sikessem\Capsule\Exception\CannotReflect;
 
 final class Reflector
 {
@@ -51,7 +51,7 @@ final class Reflector
             return new ReflectionMethod($object_or_method);
         }
 
-        throw ReflectorException::create('Cannot reflect a null or object method.');
+        throw CannotReflect::with('Cannot reflect a null or object method.');
     }
 
     /**
@@ -89,7 +89,7 @@ final class Reflector
         if ($property->hasDefaultValue()) {
             return $property->getValue($object);
         }
-        throw ReflectorException::create('Cannot get property %s', [$name]);
+        throw CannotReflect::with('Cannot get property %s', [$name]);
     }
 
     public static function setPropertyValue(object $object, string $name, mixed $value): void
@@ -97,7 +97,7 @@ final class Reflector
         $property = self::reflectProperty($object, $name);
 
         if (null !== ($type = $property->getType()) && ! self::checkType($type, $value)) {
-            throw ReflectorException::create('Property %s has invalid type.', [$name]);
+            throw CannotReflect::with('Property %s has invalid type.', [$name]);
         }
 
         $property->setValue($object, $value);

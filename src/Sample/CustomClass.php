@@ -1,10 +1,10 @@
 <?php
 
-namespace Sikessem\Capsule\Tests\Sample;
+namespace Sikessem\Capsule\Sample;
 
-class MyClass implements MyInterface
+final class CustomClass implements CustomInterface
 {
-    use MyTrait;
+    use CustomTrait;
 
     public function __construct(string $name = 'World')
     {

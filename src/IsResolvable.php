@@ -1,15 +1,17 @@
 <?php
 
-namespace Sikessem\Capsule\Interfaces;
+namespace Sikessem\Capsule;
 
-interface Resolvable
+use Sikessem\Capsule\Exception\IsNotFound;
+
+interface IsResolvable
 {
     /**
      * Allows you to call actions
      *
      * @param  array<mixed>  $args
      *
-     * @throws Triggerable When action is not defined
+     * @throws IsNotFound When action is not defined
      */
     public function __call(string $name, array $args = []): mixed;
 
@@ -18,7 +20,7 @@ interface Resolvable
      *
      * @param  array<mixed>  $args
      *
-     * @throws Triggerable When action is not defined
+     * @throws IsNotFound When action is not defined
      */
     public static function __callStatic(string $name, array $args = []): mixed;
 }

@@ -1,17 +1,17 @@
 <?php
 
-namespace Sikessem\Capsule\Traits;
+namespace Sikessem\Capsule;
 
-use Sikessem\Capsule\Exceptions\SetterException;
+use Sikessem\Capsule\Exception\NotFound;
 use Sikessem\Capsule\Support\Reflector;
 use Sikessem\Capsule\Support\Singleton;
 
-trait Modifier
+trait HasModifier
 {
     /**
      * Modify the value of an object's properties using set methods
      *
-     * @throws SetterException When property is not defined
+     * @throws NotFound When property is not defined
      */
     public function __set(string $name, mixed $value): void
     {
@@ -20,7 +20,7 @@ trait Modifier
         } elseif (property_exists($this, $name)) {
             Reflector::setPropertyValue($this, $name, $value);
         } else {
-            throw SetterException::create('Unable to set property %s.', [$name]);
+            throw NotFound::with('Unable to set property %s.', [$name]);
         }
     }
 
