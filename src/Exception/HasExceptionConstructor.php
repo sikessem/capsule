@@ -1,22 +1,24 @@
 <?php
 
-namespace Sikessem\Capsule\Traits;
+namespace Sikessem\Capsule\Exception;
 
 use Sikessem\Capsule\Support\Backtrace;
 use Throwable;
 
-trait Trigger
+trait HasExceptionConstructor
 {
+    abstract public function __construct(string $message = '', int $code = 0, ?Throwable $previous = null);
+
     /**
      * @param  array<string|int>  $arguments
      */
-    public static function create(string $message = '', array $arguments = [], int $code = 0, ?Throwable $previous = null): Throwable
+    public static function with(string $message = '', array $arguments = [], int $code = 0, ?Throwable $previous = null): Throwable
     {
         if ($arguments !== []) {
             $message = sprintf($message, ...$arguments);
         }
 
-        $super = new static ($message, $code, $previous);
+        $super = new self($message, $code, $previous);
         $trace = new Backtrace(limit: 3);
 
         $file = $trace->getFile(0);

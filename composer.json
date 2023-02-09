@@ -1,7 +1,7 @@
 {
     "name": "sikessem/capsule",
-    "description": "Capsule allows encapsulating properties and then using accessor/modifier methods to manage. Capsule also allows to define methods on an object/class dynamically.",
-    "homepage": "https://github.com/sikessem/capsule#readme",
+    "description": "Capsule is designed to make it easier to manage dependencies and objects, while improving encapsulation and ensuring code quality.",
+    "homepage": "https://packagist.org/packages/sikessem/capsule",
     "keywords": [
         "capsule",
         "encapsulation",
@@ -11,12 +11,23 @@
         "getter",
         "setter",
         "method",
-        "event"
+        "event",
+        "di",
+        "ioc",
+        "dic",
+        "container",
+        "psr",
+        "dependency-injection",
+        "injector",
+        "encapsulator",
+        "psr11",
+        "php"
     ],
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.1||^8.2"
+        "php": "^8.1||^8.2",
+        "psr/container": "^2.0"
     },
     "authors": [
         {
@@ -73,7 +84,7 @@
         ],
         "fix": [
             "@fix:lint",
-            "@fix:format",
+            "@fix:formats",
             "@fix:shift"
         ]
     },

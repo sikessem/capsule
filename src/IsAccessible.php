@@ -1,13 +1,15 @@
 <?php
 
-namespace Sikessem\Capsule\Interfaces;
+namespace Sikessem\Capsule;
 
-interface Accessible
+use Sikessem\Capsule\Exception\IsNotFound;
+
+interface IsAccessible
 {
     /**
      * Provides access to a property
      *
-     * @throws Triggerable When property is not accessible
+     * @throws IsNotFound When property is not accessible
      */
     public function __get(string $name): mixed;
 
