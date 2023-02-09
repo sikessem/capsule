@@ -105,7 +105,7 @@ final class Reflector
 
     /**
      * @param  mixed[]  $args
-     * @return mixed[]
+     * @return list<mixed>
      */
     public static function buildFunctionArgs(ReflectionFunctionAbstract $func, array $args = []): array
     {
@@ -115,11 +115,10 @@ final class Reflector
     /**
      * @param  list<ReflectionParameter>  $params
      * @param  mixed[]  $args
-     * @return mixed[]
+     * @return list<mixed>
      */
     public static function buildParametersValues(array $params, array $args): array
     {
-        /** @var mixed[] $values */
         $values = [];
         foreach ($params as $param) {
             /** @var mixed $value */
@@ -290,6 +289,10 @@ final class Reflector
 
         if (is_null($value)) {
             return $type->allowsNull();
+        }
+
+        if (in_array($name, ['static', 'self', 'parent'])) {
+            return is_object($value);
         }
 
         if ($type->isBuiltin()) {
