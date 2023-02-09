@@ -176,7 +176,7 @@ final class Container implements ContainerInterface
             if ($constructor !== null) {
                 $args = $this->buildFunctionArgs($constructor, $args);
 
-                return array_is_list($args) ? $reflectionClass->newInstance(...$args) : $reflectionClass->newInstanceArgs($args);
+                return $args === [] ? $reflectionClass->newInstance() : $reflectionClass->newInstanceArgs($args);
             }
 
             return $reflectionClass->newInstance();
@@ -221,11 +221,11 @@ final class Container implements ContainerInterface
     {
         $args = $this->buildFunctionArgs($func, $args);
 
-        if (array_is_list($args)) {
+        if ($args === []) {
             /** @var mixed $result */
             $result = $func instanceof ReflectionMethod
-            ? $func->invoke($object, ...$args)
-            : $func->invoke(...$args);
+            ? $func->invoke($object)
+            : $func->invoke();
         } else {
             /** @var mixed $result */
             $result = $func instanceof ReflectionMethod
@@ -242,7 +242,7 @@ final class Container implements ContainerInterface
 
     /**
      * @param  mixed[]  $args
-     * @return mixed[]
+     * @return list<mixed>
      */
     public function buildFunctionArgs(ReflectionFunctionAbstract $func, array $args = []): array
     {
