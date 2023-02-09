@@ -84,7 +84,7 @@
         ],
         "fix": [
             "@fix:lint",
-            "@fix:format",
+            "@fix:formats",
             "@fix:shift"
         ]
     },
