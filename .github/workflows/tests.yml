@@ -42,13 +42,25 @@ jobs:
       run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist
 
     - name: Check code shift
-      run: composer test:shift
+      run: composer shift:check
 
-    - name: Check code styles
-      run: composer test:styles
+    - name: Check code format
+      run: composer format:check
 
-    - name: Check features
-      run: composer test:unit
+    - name: Check code lint
+      run: composer lint:check
 
-    - name: Check all tests
+    - name: Check all
+      run: composer check
+
+    - name: Test types
+      run: composer test:types
+
+    - name: Test features
+      run: composer test:feat
+
+    - name: Test all
       run: composer test
+
+    - name: CI
+      run: composer ci

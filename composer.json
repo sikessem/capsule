@@ -56,36 +56,39 @@
         }
     },
     "scripts": {
-        "init:shift": "rector init",
-        "init:formats": "psalm --init",
-        "init:unit": "pest --init",
-        "fix:shift": "rector",
-        "fix:lint": "pint -v",
-        "fix:formats": "psalm --alter --issues=all --dry-run",
-        "test:shift": "rector --dry-run",
-        "test:lint": "pint --test -v",
+        "format": "psalm --alter --issues=all",
+        "format:check": "psalm --no-diff",
+        "format:init": "psalm --init",
+        "lint": "pint -v",
+        "lint:check": "pint --test -v",
+        "shift": "rector",
+        "shift:check": "rector --dry-run",
+        "shift:init": "rector init",
+        "test:init": "pest --init",
         "test:types": "phpstan analyse --ansi --memory-limit=-1 --debug",
-        "test:formats": "psalm --no-diff",
-        "test:styles": [
-            "@test:lint",
-            "@test:types",
-            "@test:formats"
+        "test:feat": "pest --colors=always",
+        "begin": [
+            "@shift:init",
+            "@format:init",
+            "@test:init"
         ],
-        "test:unit": "pest --colors=always",
-        "init:test": [
-            "@init:shift",
-            "@init:formats",
-            "@init:unit"
+        "check": [
+            "@format:check",
+            "@lint:check",
+            "@shift:check"
         ],
-        "test": [
-            "@test:shift",
-            "@test:styles",
-            "@test:unit"
+        "ci": [
+            "@check",
+            "@test"
         ],
         "fix": [
-            "@fix:lint",
-            "@fix:formats",
-            "@fix:shift"
+            "@shift",
+            "@format",
+            "@lint"
+        ],
+        "test": [
+            "@test:styles",
+            "@test:feat"
         ]
     },
     "extra": {
