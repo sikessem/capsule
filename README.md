@@ -41,8 +41,8 @@
 
 [license-icon]: https://img.shields.io/badge/license-MIT-blue.svg
 [license-link]: https://github.com/sikessem/capsule/blob/HEAD/LICENSE "Capsule License"
-[conduct-link]: https://github.com/sikessem/.github/blob/HEAD/CODE_OF_CONDUCT.md
-[contrib-link]: https://github.com/sikessem/.github/blob/HEAD/CONTRIBUTING.md
+[conduct-link]: https://github.com/sikessem/capsule/blob/HEAD/CODE_OF_CONDUCT.md
+[contrib-link]: https://github.com/sikessem/capsule/blob/HEAD/CONTRIBUTING.md
 [discuss-link]: https://github.com/sikessem/community/discussions
 
 ***
