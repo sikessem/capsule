@@ -287,6 +287,10 @@ final class Reflector
             return null === $value;
         }
 
+        if ($name === 'never') {
+            return null === $value;
+        }
+
         if (is_null($value)) {
             return $type->allowsNull();
         }
