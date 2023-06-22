@@ -25,7 +25,7 @@
 [actions-link]: https://github.com/sikessem/capsule/actions "Capsule status"
 
 [php-icon]: https://img.shields.io/badge/PHP-ccc.svg?style=flat&logo=php
-[php-link]:  https://github.com/sikessem/capsule/search?l=php "PHP code"
+[php-link]: https://github.com/sikessem/capsule/search?l=php "PHP code"
 
 [packagist-version-icon]: https://img.shields.io/packagist/v/sikessem/capsule
 [packagist-version-link]: https://packagist.org/packages/sikessem/capsule "Capsule Releases"
@@ -36,14 +36,15 @@
 [pr-icon]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?color=brightgreen
 [pr-link]: [contrib-link] "PRs welcome!"
 
-[twitter-icon]: https://img.shields.io/twitter/follow/sikessem_tweets.svg?label=@Sikessem_tweets
+[twitter-icon]: https://img.shields.io/twitter/follow/sikessem.svg?label=@sikessem_tweets
 [twitter-link]: https://twitter.com/intent/follow?screen_name=sikessem_tweets "Ping Sikessem"
 
 [license-icon]: https://img.shields.io/badge/license-MIT-blue.svg
 [license-link]: https://github.com/sikessem/capsule/blob/HEAD/LICENSE "Capsule License"
 [conduct-link]: https://github.com/sikessem/capsule/blob/HEAD/CODE_OF_CONDUCT.md
-[contrib-link]: https://github.com/sikessem/capsule/blob/HEAD/CONTRIBUTING.md
-[discuss-link]: https://github.com/sikessem/community/discussions
+[contrib-link]: https://github.com/sikessem/.github/blob/HEAD/CONTRIBUTING.md
+[discuss-link]: https://github.com/orgs/sikessem/discussions
+[docs-link]: https://github.com/sikessem/capsule#readme "Capsule Documentation"
 
 ***
 
@@ -55,22 +56,33 @@ Capsule is a library that uses a Container to manage dependencies and objects in
 
 - [An Efficient Dependency Injector and Encapsulator](#an-efficient-dependency-injector-and-encapsulator)
   - [🔖 Contents](#-contents)
+  - [📖 Documentation](#-documentation)
   - [📋 Requirements](#-requirements)
-  - [⚡️ Installation](#️-installation)
-  - [🧑‍💻 Usage](#-usage)
+  - [🎉 Getting Started](#-getting-started)
+    - [⚡️ Installation](#️-installation)
+    - [🧑‍💻 Usage](#-usage)
+  - [🧪 Testing and debugging](#-testing-and-debugging)
   - [👏 Contribution](#-contribution)
-    - [Code of Conduct](#code-of-conduct)
+    - [👷 Code of Conduct](#-code-of-conduct)
     - [👥 Contributing Guide](#-contributing-guide)
     - [🔒️ Good First Issues](#️-good-first-issues)
     - [💬 Discussions](#-discussions)
   - [🔐 Security Reports](#-security-reports)
+  - [📄 License](#-license)
+
+
+## 📖 Documentation
+
+The full documentation for the Sikessem Capsule can be found on [this address][docs-link].
 
 ## 📋 Requirements
 
-> - **Requires [PHP 8.1+](https://php.net/releases/)** (at least 8.1.14 recommended to avoid potential bugs).
+> - **Requires [PHP 8.1+](https://php.net/releases/)** (at least 8.1.19 recommended to avoid potential bugs).
 > - **Requires [Composer v2+](https://getcomposer.org/)** to manage PHP dependencies.
 
-## ⚡️ Installation
+## 🎉 Getting Started
+
+### ⚡️ Installation
 
 Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Composer](https://getcomposer.org/):
 
@@ -86,11 +98,11 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
 
 - Or by including the dependency:
 
-    ```bash
+    ```shell
     composer require sikessem/capsule --no-dev
     ```
 
-## 🧑‍💻 Usage
+### 🧑‍💻 Usage
 
 1. Define your custom components using Capsule's interfaces and traits:
 
@@ -180,11 +192,51 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
     echo $capsule->hello(); //Prints "Hello Sikessem!"
     ```
 
+## 🧪 Testing and debugging
+
+🧹 Keep a modern codebase with **Pint**:
+
+```shell
+composer lint
+```
+
+⚗️ Run static analysis:
+
+- Using **PHPStan**:
+
+```shell
+composer analyse
+```
+
+- Using **Psalm**:
+
+```shell
+composer inspect
+```
+
+✅ Run unit tests using **PEST**
+
+```shell
+composer test
+```
+
+🐛 Check all code bugs:
+
+```shell
+composer debug
+```
+
+🚀 Fix the entire code:
+
+```shell
+composer fix
+```
+
 ## 👏 Contribution
 
 The main purpose of this repository is to continue evolving Sikessem. We want to make contributing to this project as easy and transparent as possible, and we are grateful to the community for contributing bug fixes and improvements. Read below to learn how you can take part in improving Sikessem.
 
-### [Code of Conduct][conduct-link]
+### [👷 Code of Conduct][conduct-link]
 
 Sikessem has adopted a Code of Conduct that we expect project participants to adhere to.
 Please read the [full text][conduct-link] so that you can understand what actions will and will not be tolerated.
@@ -201,12 +253,16 @@ We have a list of [good first issues][gfi] that contain bugs which have a relati
 
 ### 💬 Discussions
 
-Larger discussions and proposals are discussed in [**sikessem/community**][discuss-link].
+Larger discussions and proposals are discussed in [**Sikessem's GitHub discussions**][discuss-link].
 
 ## 🔐 Security Reports
 
-If you discover a security vulnerability within [Sikessem](https://sikessem.com), please email [SIGUI Kessé Emmanuel](https://github.com/siguikesse) at [ske@sikessem.com](mailto:ske@sikessem.com). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within [Sikessem][sikessem-link], please email [SIGUI Kessé Emmanuel](https://sigui.ci) at [contact@sigui.ci](mailto:contact@sigui.ci). All security vulnerabilities will be promptly addressed.
+
+## 📄 License
+
+The Sikessem Capsule is open-sourced software licensed under the  [MIT License](https://opensource.org/licenses/MIT) - see the [LICENSE][license-link] file for details.
 
 ***
 
-<div align="center"><sub>Made with ❤︎ by <a href="https://twitter.com/sikessem_tweets">Sikessem</a>.</sub></div>
+<div align="center"><sub>Made with ❤︎ by <a href="https://twitter.com/intent/follow?screen_name=siguici" style="content:url(https://img.shields.io/twitter/follow/siguici.svg?label=@siguici);margin-bottom:-6px">@siguici</a>.</sub></div>

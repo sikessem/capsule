@@ -2,6 +2,8 @@
     "name": "sikessem/capsule",
     "description": "Capsule is designed to make it easier to manage dependencies and objects, while improving encapsulation and ensuring code quality.",
     "homepage": "https://packagist.org/packages/sikessem/capsule",
+    "type": "library",
+    "license": "MIT",
     "keywords": [
         "capsule",
         "encapsulation",
@@ -23,15 +25,18 @@
         "psr11",
         "php"
     ],
-    "type": "library",
-    "license": "MIT",
     "authors": [
         {
             "name": "SIGUI Kessé Emmanuel",
-            "email": "ske@sikessem.com",
-            "homepage": "http://sikessem.com"
+            "email": "contact@sigui.ci",
+            "homepage": "https://sigui.ci"
         }
     ],
+    "support": {
+        "source": "https://github.com/sikessem/capsule",
+        "issues": "https://github.com/sikessem/capsule/issues",
+        "chat": "https://github.com/orgs/sikessem/discussions"
+    },
     "require": {
         "php": "^8.1||^8.2",
         "psr/container": "^2.0"
@@ -50,44 +55,30 @@
         }
     },
     "scripts": {
-        "format": "psalm --alter --issues=all",
-        "format:check": "psalm --no-diff",
-        "format:init": "psalm --init",
-        "lint": "pint -v",
-        "lint:check": "pint --test -v",
-        "shift": "rector",
-        "shift:check": "rector --dry-run",
-        "shift:init": "rector init",
-        "test:init": "pest --init",
-        "test:types": "phpstan analyse --ansi --memory-limit=-1 --debug",
-        "test:feat": "pest --colors=always",
-        "begin": [
-            "@shift:init",
-            "@format:init",
-            "@test:init"
-        ],
-        "check": [
-            "@format:check",
-            "@lint:check",
-            "@shift:check"
-        ],
-        "ci": [
-            "@check",
+        "alter": "psalter --issues=all",
+        "analyse": "phpstan analyse --ansi --memory-limit=-1 --debug",
+        "debug": [
+            "@lint",
+            "@analyse",
+            "@inspect",
+            "@review",
             "@test"
         ],
         "fix": [
-            "@shift",
-            "@format",
-            "@lint"
+            "@refactor",
+            "@alter",
+            "@format"
         ],
-        "test": [
-            "@test:styles",
-            "@test:feat"
-        ]
+        "format": "pint -v",
+        "inspect": "psalm --no-diff",
+        "lint": "pint --test -v",
+        "test": "pest --colors=always",
+        "review": "rector --dry-run --debug",
+        "refactor": "rector"
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "0.x-dev"
+            "dev-main": "1.x-dev"
         }
     },
     "config": {
