@@ -205,7 +205,7 @@ Larger discussions and proposals are discussed in [**sikessem/community**][discu
 
 ## 🔐 Security Reports
 
-If you discover a security vulnerability within [Sikessem](https://sikessem.com), please email [SIGUI Kessé Emmanuel](https://github.com/siguikesse) at [ske@sikessem.com](mailto:ske@sikessem.com). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within [Sikessem](https://sikessem.com), please email [SIGUI Kessé Emmanuel](https://github.com/siguici) at [contact@sigui.ci](mailto:contact@sigui.ci). All security vulnerabilities will be promptly addressed.
 
 ***
 
