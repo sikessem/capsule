@@ -2,7 +2,13 @@
 
 All notable changes to [Capsule](https://github.com/sikessem/capsule) will be documented in this file.
 
-## [Unreleased](https://github.com/sikessem/capsule/compare/0.4.1...HEAD)
+## [Unreleased](https://github.com/sikessem/capsule/compare/v0.5.2...HEAD)
+
+## [v0.5.2](https://github.com/sikessem/capsule/releases/tag/v0.5.2) - 2023-06-22
+
+### Fixed
+
+- Fixed code format and lint
 
 ## [v0.5.1](https://github.com/sikessem/capsule/releases/tag/v0.5.1) - 2023-02-09
 
@@ -25,4 +31,4 @@ All notable changes to [Capsule](https://github.com/sikessem/capsule) will be do
 - Added CHANGELOG.md
 - Added dependency injection container
 
-**Full Changelog:** [0.4.1...v0.5.1](https://github.com/sikessem/capsule/compare/0.4.1...v0.5.1)
+**Full Changelog:** [v0.5.1...v0.5.2](https://github.com/sikessem/capsule/compare/v0.5.1...v0.5.2)

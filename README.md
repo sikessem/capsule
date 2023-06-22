@@ -79,7 +79,7 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
     ```json
     {
         "require" : {
-            "sikessem/capsule": "^0.4"
+            "sikessem/capsule": "^0.5"
         }
     }
     ```
