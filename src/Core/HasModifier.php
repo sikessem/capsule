@@ -1,6 +1,6 @@
 <?php
 
-namespace Sikessem\Capsule;
+namespace Sikessem\Capsule\Core;
 
 use Sikessem\Capsule\Exception\NotFound;
 use Sikessem\Capsule\Support\Reflector;

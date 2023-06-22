@@ -99,7 +99,7 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
 
     namespace Sikessem\Capsule\Sample;
 
-    use Sikessem\Capsule\IsEncapsulated;
+    use Sikessem\Capsule\Core\IsEncapsulated;
 
     interface CustomInterface extends IsEncapsulated
     {
@@ -130,7 +130,7 @@ Install [Capsule](https://packagist.org/packages/sikessem/capsule) using [Compos
 
     namespace Sikessem\Capsule\Sample;
 
-    use Sikessem\Capsule\HasEncapsulator;
+    use Sikessem\Capsule\Core\HasEncapsulator;
 
     trait CustomTrait
     {

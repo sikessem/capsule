@@ -2,7 +2,7 @@
 
 namespace Sikessem\Capsule\Sample;
 
-use Sikessem\Capsule\HasEncapsulator;
+use Sikessem\Capsule\Core\HasEncapsulator;
 
 trait CustomTrait
 {

@@ -2,7 +2,7 @@
 
 namespace Sikessem\Capsule\Sample;
 
-use Sikessem\Capsule\IsEncapsulated;
+use Sikessem\Capsule\Core\IsEncapsulated;
 
 interface CustomInterface extends IsEncapsulated
 {

@@ -2,11 +2,11 @@
 
 namespace Sikessem\Capsule\Tests;
 
+use Sikessem\Capsule\Core\IsAccessible;
+use Sikessem\Capsule\Core\IsEncapsulated;
+use Sikessem\Capsule\Core\IsModifiable;
+use Sikessem\Capsule\Core\IsResolvable;
 use Sikessem\Capsule\Exception\NotFound;
-use Sikessem\Capsule\IsAccessible;
-use Sikessem\Capsule\IsEncapsulated;
-use Sikessem\Capsule\IsModifiable;
-use Sikessem\Capsule\IsResolvable;
 use Sikessem\Capsule\Sample\CustomClass;
 use Sikessem\Capsule\Support\Container;
 
