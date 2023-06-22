@@ -8,7 +8,7 @@ use Sikessem\Capsule\Exception\UnableToCall;
 final class Callback
 {
     /**
-     * @var array<callable-string|callable-object>|callable-string|callable-object|callable(mixed ...$args): mixed
+     * @var array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed
      */
     private mixed $value;
 
@@ -20,7 +20,7 @@ final class Callback
     private $function;
 
     /**
-     * @param array<callable-string|callable-object>|callable-string|callable-object|callable(mixed ...$args): mixed $value
+     * @param array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed $value
      */
     public function __construct(array|string|object|callable $value)
     {
@@ -28,7 +28,7 @@ final class Callback
     }
 
     /**
-     * @param array<callable-string|callable-object>|callable-string|callable-object|callable(mixed ...$args): mixed $value
+     * @param array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed $value
      */
     public static function from(array|string|object|callable $value): self
     {
@@ -36,7 +36,7 @@ final class Callback
     }
 
     /**
-     * @param array<callable-string|callable-object>|callable-string|callable-object|callable(mixed ...$args): mixed $value
+     * @param array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed $value
      */
     public function setValue(array|string|object|callable $value): static
     {
@@ -74,7 +74,7 @@ final class Callback
     }
 
     /**
-     * @return array<callable-string|callable-object>|callable-string|callable-object|callable(mixed ...$args): mixed
+     * @return array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed
      */
     public function getValue(): array|string|object|callable
     {

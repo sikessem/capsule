@@ -190,7 +190,7 @@ final class Container implements ContainerInterface
     }
 
     /**
-     * @param array<callable-object|callable-string>|callable-string|callable-object|callable(mixed ...$args): mixed $callback
+     * @param array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed $callback
      */
     public function invoke(array|string|object|callable $callback, mixed ...$arguments): mixed
     {
@@ -198,7 +198,7 @@ final class Container implements ContainerInterface
     }
 
     /**
-     * @param  array<callable-object|callable-string>|callable-string|callable-object|callable(mixed ...$args): mixed  $callback
+     * @param  array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed  $callback
      * @param  mixed[]  $args
      */
     public function invokeArgs(array|string|object|callable $callback, array $args = []): mixed
