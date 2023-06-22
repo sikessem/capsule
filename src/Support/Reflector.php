@@ -75,6 +75,9 @@ final class Reflector
         return null;
     }
 
+    /**
+     * @param  class-string|object  $class
+     */
     public static function reflectProperty(object|string $class, string $property): ReflectionProperty
     {
         return new ReflectionProperty($class, $property);
@@ -96,7 +99,7 @@ final class Reflector
     {
         $property = self::reflectProperty($object, $name);
 
-        if (null !== ($type = $property->getType()) && ! self::checkType($type, $value)) {
+        if (($type = $property->getType()) instanceof \ReflectionType && ! self::checkType($type, $value)) {
             throw CannotReflect::with('Property %s has invalid type.', [$name]);
         }
 
@@ -252,7 +255,7 @@ final class Reflector
 
     public static function checkType(?ReflectionType $type, mixed $value): bool
     {
-        if (null === $type) {
+        if (! $type instanceof \ReflectionType) {
             return true;
         }
 

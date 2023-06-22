@@ -8,9 +8,9 @@ use Sikessem\Capsule\Exception\UnableToCall;
 final class Callback
 {
     /**
-     * @var array<object|string>|string|object|callable(mixed ...$args): mixed
+     * @var array<callable-string|callable-object>|callable-string|callable-object|callable(mixed ...$args): mixed
      */
-    private $value;
+    private mixed $value;
 
     private ?string $method = null;
 
@@ -20,7 +20,7 @@ final class Callback
     private $function;
 
     /**
-     * @param array<object|string>|string|object|callable(mixed ...$args): mixed $value
+     * @param array<callable-string|callable-object>|callable-string|callable-object|callable(mixed ...$args): mixed $value
      */
     public function __construct(array|string|object|callable $value)
     {
@@ -28,7 +28,7 @@ final class Callback
     }
 
     /**
-     * @param array<object|string>|string|object|callable(mixed ...$args): mixed $value
+     * @param array<callable-string|callable-object>|callable-string|callable-object|callable(mixed ...$args): mixed $value
      */
     public static function from(array|string|object|callable $value): self
     {
@@ -36,13 +36,15 @@ final class Callback
     }
 
     /**
-     * @param array<object|string>|string|object|callable(mixed ...$args): mixed $value
+     * @param array<callable-string|callable-object>|callable-string|callable-object|callable(mixed ...$args): mixed $value
      */
     public function setValue(array|string|object|callable $value): static
     {
         if (! is_callable($value)) {
             throw UnableToCall::with('The callback value must be callable.');
         }
+
+        $this->value = $value;
 
         if (
             is_string($value)
@@ -68,13 +70,11 @@ final class Callback
             $this->function = $value;
         }
 
-        $this->value = $value;
-
         return $this;
     }
 
     /**
-     * @return array<object|string>|string|object|callable(mixed ...$args): mixed
+     * @return array<callable-string|callable-object>|callable-string|callable-object|callable(mixed ...$args): mixed
      */
     public function getValue(): array|string|object|callable
     {

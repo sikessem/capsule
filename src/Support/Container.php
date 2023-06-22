@@ -82,7 +82,11 @@ final class Container implements ContainerInterface
                 return $this->instanciateArgs($id, $component);
             }
 
-            return $this->invokeArgs($id, $component);
+            if (is_callable($id)) {
+                return $this->invokeArgs($id, $component);
+            }
+
+            throw BadValue::with('Invalid component given');
         }
 
         if (is_callable($component)) {
@@ -173,7 +177,7 @@ final class Container implements ContainerInterface
         if ($reflectionClass->isInstantiable()) {
             $constructor = $reflectionClass->getConstructor();
 
-            if ($constructor !== null) {
+            if ($constructor instanceof \ReflectionMethod) {
                 $args = $this->buildFunctionArgs($constructor, $args);
 
                 return $args === [] ? $reflectionClass->newInstance() : $reflectionClass->newInstanceArgs($args);
@@ -186,7 +190,7 @@ final class Container implements ContainerInterface
     }
 
     /**
-     * @param array<object|string>|string|object|callable(mixed ...$args): mixed $callback
+     * @param array<callable-object|callable-string>|callable-string|callable-object|callable(mixed ...$args): mixed $callback
      */
     public function invoke(array|string|object|callable $callback, mixed ...$arguments): mixed
     {
@@ -194,7 +198,7 @@ final class Container implements ContainerInterface
     }
 
     /**
-     * @param  array<object|string>|string|object|callable(mixed ...$args): mixed  $callback
+     * @param  array<callable-object|callable-string>|callable-string|callable-object|callable(mixed ...$args): mixed  $callback
      * @param  mixed[]  $args
      */
     public function invokeArgs(array|string|object|callable $callback, array $args = []): mixed

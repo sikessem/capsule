@@ -16,10 +16,10 @@ beforeEach(function () {
 
 it('should be encapsulated', function () {
     expect($this->capsule)
-    ->toBeInstanceOf(IsEncapsulated::class)
-    ->toBeInstanceOf(IsAccessible::class)
-    ->toBeInstanceOf(IsModifiable::class)
-    ->toBeInstanceOf(IsResolvable::class);
+        ->toBeInstanceOf(IsEncapsulated::class)
+        ->toBeInstanceOf(IsAccessible::class)
+        ->toBeInstanceOf(IsModifiable::class)
+        ->toBeInstanceOf(IsResolvable::class);
 });
 
 it('should be resolvable', function () {
@@ -28,8 +28,8 @@ it('should be resolvable', function () {
     $this->capsule->on('hello', $hello);
 
     expect(CustomClass::hello())
-    ->toEqual($this->capsule->hello())
-    ->toEqual('Hello Sikessem!');
+        ->toEqual($this->capsule->hello())
+        ->toEqual('Hello Sikessem!');
 });
 
 it('should set and get name', function () {
@@ -37,21 +37,21 @@ it('should set and get name', function () {
     $capsule->name = 'Capsule';
 
     expect($capsule->name)
-    ->toEqual('Capsule');
+        ->toEqual('Capsule');
 });
 
 it('throws a not found exception when not encapsulable', function () {
     expect(fn () => $this->capsule->age)
-    ->toThrow(NotFound::class, 'Unable to get property age.');
+        ->toThrow(NotFound::class, 'Unable to get property age.');
 
     expect(fn () => $this->capsule->age = 22)
-    ->toThrow(NotFound::class, 'Unable to set property age.');
+        ->toThrow(NotFound::class, 'Unable to set property age.');
 
     expect(fn () => $this->capsule->hi())
-    ->toThrow(NotFound::class, 'Could not find action hi.');
+        ->toThrow(NotFound::class, 'Could not find action hi.');
 
     expect(fn () => CustomClass::hi())
-    ->toThrow(NotFound::class, 'Could not find static action hi.');
+        ->toThrow(NotFound::class, 'Could not find static action hi.');
 });
 
 it('should provide the components', function () {

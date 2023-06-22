@@ -45,9 +45,14 @@ trait HasResolver
     public function resolve(string $name, array $args = []): mixed
     {
         foreach ($this->actions as $_name => $action) {
-            if ($_name == $name) {
-                return Singleton::getContainer()->invoke($action, ...$args);
+            if ($_name != $name) {
+                continue;
             }
+            if (! is_callable($action)) {
+                continue;
+            }
+
+            return Singleton::getContainer()->invoke($action, ...$args);
         }
 
         throw NotFound::with('Could not find action %s.', [$name]);
@@ -63,9 +68,14 @@ trait HasResolver
     public static function resolveStatic(string $name, array $args = []): mixed
     {
         foreach (static::$ACTIONS as $_name => $action) {
-            if ($_name === $name) {
-                return Singleton::getContainer()->invoke($action, ...$args);
+            if ($_name !== $name) {
+                continue;
             }
+            if (! is_callable($action)) {
+                continue;
+            }
+
+            return Singleton::getContainer()->invoke($action, ...$args);
         }
 
         throw NotFound::with('Could not find static action %s.', [$name]);
