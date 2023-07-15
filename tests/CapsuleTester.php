@@ -23,7 +23,7 @@ it('should be encapsulated', function () {
 });
 
 it('should be resolvable', function () {
-    $hello = fn (?string $name = null) => 'Hello '.($name ?? 'Sikessem').'!';
+    $hello = fn (string $name = null) => 'Hello '.($name ?? 'Sikessem').'!';
     CustomClass::onStatic('hello', $hello);
     $this->capsule->on('hello', $hello);
 
