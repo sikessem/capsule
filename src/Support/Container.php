@@ -22,7 +22,7 @@ final class Container implements ContainerInterface
     private array $aliases = [];
 
     /**
-     * @param array<string, mixed[]|string|object|callable(mixed ...$args): mixed> $components
+     * @param  array<string, mixed[]|string|object|callable(mixed ...$args): mixed>  $components
      */
     public function __construct(array $components = [])
     {
@@ -30,7 +30,7 @@ final class Container implements ContainerInterface
     }
 
     /**
-     * @param array<string, mixed[]|string|object|callable(mixed ...$args): mixed> $components
+     * @param  array<string, mixed[]|string|object|callable(mixed ...$args): mixed>  $components
      */
     public function setComponents(array $components): static
     {
@@ -42,7 +42,7 @@ final class Container implements ContainerInterface
     }
 
     /**
-     * @param mixed[]|string|object|callable(mixed ...$args): mixed $component
+     * @param  mixed[]|string|object|callable(mixed ...$args): mixed  $component
      */
     public function set(string $id, array|string|object|callable $component): static
     {
@@ -127,7 +127,7 @@ final class Container implements ContainerInterface
     /**
      * @return null|class-string
      */
-    public function getClass(string $id): null|string
+    public function getClass(string $id): ?string
     {
         if (isset($this->components[$id])) {
             $component = $this->components[$id];
@@ -190,7 +190,7 @@ final class Container implements ContainerInterface
     }
 
     /**
-     * @param array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed $callback
+     * @param  array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed  $callback
      */
     public function invoke(array|string|object|callable $callback, mixed ...$arguments): mixed
     {
@@ -221,7 +221,7 @@ final class Container implements ContainerInterface
     /**
      * @param  mixed[]  $args
      */
-    public function invokeFunctionArgs(ReflectionFunction|ReflectionMethod $func, array $args = [], ?object $object = null): mixed
+    public function invokeFunctionArgs(ReflectionFunction|ReflectionMethod $func, array $args = [], object $object = null): mixed
     {
         $args = $this->buildFunctionArgs($func, $args);
 

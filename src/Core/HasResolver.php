@@ -18,7 +18,7 @@ trait HasResolver
     protected static array $ACTIONS = [];
 
     /**
-     * @param array<object|string>|string|object|callable(mixed ...$args): mixed $action
+     * @param  array<object|string>|string|object|callable(mixed ...$args): mixed  $action
      */
     public function on(string $name, $action): static
     {
@@ -28,7 +28,7 @@ trait HasResolver
     }
 
     /**
-     * @param array<object|string>|string|object|callable(mixed ...$args): mixed $action
+     * @param  array<object|string>|string|object|callable(mixed ...$args): mixed  $action
      */
     public static function onStatic(string $name, $action): void
     {
