@@ -8,7 +8,6 @@
 [![packagist-version-icon]][packagist-version-link]
 [![packagist-download-icon]][packagist-download-link]
 [![license-icon]][license-link]
-[![enabled-icon]][enabled-link]
 [![actions-icon]][actions-link]
 [![pr-icon]][pr-link]
 [![twitter-icon]][twitter-link]
@@ -17,9 +16,6 @@
 
 [sikessem-logo]: https://github.com/sikessem/art/blob/HEAD/images/sikessem.svg
 [sikessem-link]: https://github.com/sikessem "Sikessem"
-
-[enabled-icon]: https://img.shields.io/badge/Capsule-enabled-brightgreen.svg?style=flat
-[enabled-link]: https://github.com/sikessem/capsule "Capsule enabled"
 
 [actions-icon]: https://github.com/sikessem/capsule/workflows/Tests/badge.svg
 [actions-link]: https://github.com/sikessem/capsule/actions "Capsule status"

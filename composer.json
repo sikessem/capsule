@@ -51,40 +51,31 @@
         }
     },
     "scripts": {
-        "format": "psalm --alter --issues=all",
-        "format:check": "psalm --no-diff",
-        "format:init": "psalm --init",
-        "lint": "pint -v",
-        "lint:check": "pint --test -v",
-        "shift": "rector",
-        "shift:check": "rector --dry-run",
-        "shift:init": "rector init",
-        "test:init": "pest --init",
-        "test:types": "phpstan analyse --ansi --memory-limit=-1 --debug",
-        "test:feat": "pest --colors=always",
-        "begin": [
-            "@shift:init",
-            "@format:init",
-            "@test:init"
-        ],
-        "check": [
-            "@format:check",
-            "@lint:check",
-            "@shift:check"
-        ],
-        "ci": [
+        "analyse": "phpstan analyse --ansi --memory-limit=-1 --debug",
+        "check": "pint --test -v",
+        "debug": [
             "@check",
+            "@analyse",
+            "@inspect",
+            "@review",
             "@test"
         ],
+        "devtools:init": [
+            "psalm --init",
+            "rector init",
+            "pest --init"
+        ],
         "fix": [
-            "@shift",
+            "@refactor",
             "@format",
             "@lint"
         ],
-        "test": [
-            "@test:styles",
-            "@test:feat"
-        ]
+        "format": "psalter --issues=all",
+        "inspect": "psalm --no-diff",
+        "lint": "pint -v",
+        "test": "pest --colors=always",
+        "review": "rector --dry-run --debug",
+        "refactor": "rector"
     },
     "extra": {
         "branch-alias": {
