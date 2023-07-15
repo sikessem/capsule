@@ -2,7 +2,6 @@
 
 namespace Sikessem\Capsule\Exception;
 
-use Sikessem\Capsule\Support\Backtrace;
 use Throwable;
 
 trait HasExceptionConstructor
@@ -19,7 +18,7 @@ trait HasExceptionConstructor
         }
 
         $super = new self($message, $code, $previous);
-        $trace = new Backtrace(limit: 3);
+        $trace = backtrace(limit: 3);
 
         $file = $trace->getFile(0);
         $line = $trace->getLine(0);
