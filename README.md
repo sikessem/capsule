@@ -47,6 +47,10 @@
 
 Capsule is a library that uses a Container to manage dependencies and objects in an organized and centralized way, thus facilitating encapsulation.
 
+> [!WARNING]
+> This package is no longer maintained.
+Please use [sikessem/core](https://github.com/sikessem/core) instead.
+
 ## 🔖 Contents
 
 - [An Efficient Dependency Injector and Encapsulator](#an-efficient-dependency-injector-and-encapsulator)
